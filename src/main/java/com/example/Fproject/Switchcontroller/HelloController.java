@@ -2,9 +2,9 @@ package com.example.Fproject.Switchcontroller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,39 +14,55 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class HelloController {
+    private RestTemplate restTemplate;
+
+    public HelloController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
     @GetMapping("/on")
-    public ResponseEntity<String> turnOn() throws JsonProcessingException {
-        Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("Result", "Success");
+    public ResponseEntity<String> on(HttpServletRequest request) {
+        String url = "https://e862-49-216-45-231.ngrok-free.app/on";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
 
-        String responseJson = new ObjectMapper().writeValueAsString(responseMap);
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
-        // 呼叫 2: 程式中的 sendGetRequestToOtherIP() 方法
-        ExampleService exampleService = new ExampleService(new RestTemplateBuilder());
-        exampleService.sendGetRequestToOtherIP("http://other-ip:80/on");
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
-        return new ResponseEntity<>(responseJson, HttpStatus.OK);
+        return ResponseEntity.ok().body(response.getBody());
     }
 
     @GetMapping("/off")
-    public ResponseEntity<String> turnOff() throws JsonProcessingException {
-        Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("Result", "Success");
+    public ResponseEntity<String> off(HttpServletRequest request) {
+        String url = "https://e862-49-216-45-231.ngrok-free.app/off";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
 
-        String responseJson = new ObjectMapper().writeValueAsString(responseMap);
-        return new ResponseEntity<>(responseJson, HttpStatus.OK);
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+        return ResponseEntity.ok().body(response.getBody());
     }
 
     @GetMapping("/state")
-    public ResponseEntity<String> getState() throws JsonProcessingException {
-        Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("State", "on");
+    public ResponseEntity<String> state(HttpServletRequest request) {
+        String url = "https://e862-49-216-45-231.ngrok-free.app/state";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
 
-        String responseJson = new ObjectMapper().writeValueAsString(responseMap);
-        return new ResponseEntity<>(responseJson, HttpStatus.OK);
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+        return ResponseEntity.ok().body(response.getBody());
     }
 
 }
