@@ -19,17 +19,5 @@ public class SwaggerConfig {
                                 .version("v1.0.0")
                 );
     }
-    @Bean
-    public GroupedOpenApi CIMSSApi() {
-        return GroupedOpenApi.builder()
-                .group("CIM-api")
-                .pathsToMatch("/**")
-                .addOperationCustomizer((operation, handlerMethod) -> {
-                    if (handlerMethod.getBeanType().getSimpleName().equals("LineMessageHandlerSupport")) {
-                        return null;
-                    }
-                    return operation;
-                })
-                .build();
-    }
+
 }
