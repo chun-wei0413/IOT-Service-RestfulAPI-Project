@@ -17,7 +17,7 @@ import java.util.concurrent.Exchanger;
 public class IotController {
 
     @Operation(summary = "turn on the light", description = "Turn on the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value="/on/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/devices/{id}/on", method=RequestMethod.GET)
     public ObjectNode turnOn(@RequestHeader(name = "Authorization") String accessToken,
                      @Parameter(description = "The key is a string composed of 6 digits", example = "ACDE12")
                      @PathVariable String id){
@@ -39,7 +39,7 @@ public class IotController {
         return ResponseEntity.ok().body(response.getBody());
     }*/
     @Operation(summary = "turn off the light", description = "Turn off the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value="/off/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/devices/{id}/off", method=RequestMethod.GET)
     public ObjectNode turnOff(@RequestHeader(name = "Authorization") String accessToken,
                          @Parameter(description = "The key is a string composed of 6 digits", example = "ACDE12")
                          @PathVariable String id){
@@ -50,7 +50,7 @@ public class IotController {
         return response;
     }
     @Operation(summary = "Check the status of the light", description = "Check the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value="/state/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/devices/{id}/state", method=RequestMethod.GET)
     public ObjectNode getState(@RequestHeader(name = "Authorization") String accessToken,
                          @Parameter(description = "The key is a string composed of 6 digits", example = "ACDE12")
                          @PathVariable String id){
@@ -61,7 +61,7 @@ public class IotController {
         return response;
     }
     @Operation(summary = "modify device", description = "Modify the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value="/{id}/alter", method=RequestMethod.PUT)
+    @RequestMapping(value="/devices/{id}/alter", method=RequestMethod.PUT)
     public ObjectNode alterDevice(@RequestHeader(name = "Authorization") String accessToken,
                          @Parameter(description = "The key is a string composed of 6 digits", example = "ACDE12")
                          @PathVariable String id){
@@ -73,7 +73,7 @@ public class IotController {
     }
 
     @Operation(summary = "delete device", description = "Delete the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value="/{id}/delete", method=RequestMethod.DELETE)
+    @RequestMapping(value="/devices/{id}/delete", method=RequestMethod.DELETE)
     public ObjectNode deleteDevice(@RequestHeader(name = "Authorization") String accessToken,
                          @Parameter(description = "The key is a string composed of 6 digits", example = "ACDE12")
                          @PathVariable String id){
@@ -85,7 +85,7 @@ public class IotController {
     }
 
     @Operation(summary = "add new device", description = "Add a device without authentication")
-    @RequestMapping(value="/new", method=RequestMethod.POST)
+    @RequestMapping(value="/devices/new", method=RequestMethod.POST)
     public ObjectNode addDevice(){
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode response = mapper.createObjectNode(); // 創建一個空的 ObjectNode
