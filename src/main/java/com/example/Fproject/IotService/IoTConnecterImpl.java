@@ -42,7 +42,7 @@ public class IoTConnecterImpl implements IoTConnecter {
                 response.append("GET request failed with response code: " + responseCode);
             }
         } 
-        //發生例外狀況時，將錯誤訊息附加在response字串後面返回，在這裡，response字串是用於存儲從IoT裝置接收到的數據或錯誤訊息。
+        //發生例外狀況時，將錯誤訊息附加在response字串後面返回，存儲從IoT裝置接收到的數據或錯誤訊息。
         catch (IOException e) {
             response.append("Exception occurred while sending GET request: " + e.getMessage());
         }
