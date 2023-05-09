@@ -7,7 +7,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class IoTConnecterImpl implements IoTConnecter {
-    private static final String USER_AGENT = "Mozilla/5.0";
     
     @Override
     public String powerOn(String url) {
@@ -33,7 +32,6 @@ public class IoTConnecterImpl implements IoTConnecter {
             URL url = new URL(requestUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("User-Agent", USER_AGENT);
 
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
