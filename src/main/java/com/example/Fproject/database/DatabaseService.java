@@ -1,9 +1,9 @@
-package com.example.Fproject.IotService;
+package com.example.Fproject.database;
 
 public interface DatabaseService {
 	boolean authorization(String key,String id);
 	String getUrl(String id);
 	String[] addDevice(String url);
 	boolean alterDevice(String url);
-	boolean deleteDevice(String key,String id);
+	boolean deleteDevice(String id);
 }

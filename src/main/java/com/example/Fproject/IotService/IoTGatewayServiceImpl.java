@@ -1,6 +1,8 @@
-package IoT;
+package com.example.Fproject.IotService;
 
 //import java.util.UUID;
+
+import com.example.Fproject.database.DatabaseService;
 
 public class IoTGatewayServiceImpl implements IoTGatewayService {
     private DatabaseService databaseService;
@@ -44,8 +46,8 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     }
 
     @Override
-    public boolean deleteDevice(String key, String id) {
+    public boolean deleteDevice(String key,String id) {
         if(!databaseService.authorization(key, id)) return false;
-        return databaseService.deleteDevice(key, id);
+        return databaseService.deleteDevice(id);
     }
 }
