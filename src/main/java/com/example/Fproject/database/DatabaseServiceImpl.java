@@ -3,10 +3,12 @@ package com.example.Fproject.database;
 import com.example.Fproject.database.entity.device;
 import com.example.Fproject.database.dao.deviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class DatabaseServiceImpl implements DatabaseService {
 
 	@Autowired
@@ -15,6 +17,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 	@Override
 	public boolean authorization(String key, String id) {
 		device device = deviceRepository.findById(id).orElse(null);
+		System.out.println("device: " + device);
 		if (device == null) {
 			return false;
 		}

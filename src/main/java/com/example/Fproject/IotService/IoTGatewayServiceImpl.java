@@ -2,6 +2,7 @@ package com.example.Fproject.IotService;
 
 //import java.util.UUID;
 
+import com.example.Fproject.IotService.exception.UnauthorizedException;
 import com.example.Fproject.database.DatabaseService;
 
 public class IoTGatewayServiceImpl implements IoTGatewayService {
@@ -15,19 +16,20 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
     @Override
     public String powerOn(String key, String id) {
-        if(!databaseService.authorization(key, id)) return null;
+        if(!databaseService.authorization(key, id)) throw new UnauthorizedException();;
         return ioTConnecter.powerOn(databaseService.getUrl(id));
+
     }
 
     @Override
     public String powerOff(String key, String id) {
-        if(!databaseService.authorization(key, id)) return null;
+        if(!databaseService.authorization(key, id)) throw new UnauthorizedException();;
         return ioTConnecter.powerOff(databaseService.getUrl(id));
     }
 
     @Override
     public String getState(String key, String id) {
-        if(!databaseService.authorization(key, id)) return null;
+        if(!databaseService.authorization(key, id)) throw new UnauthorizedException();;
         return ioTConnecter.getState(databaseService.getUrl(id));
     }
 
