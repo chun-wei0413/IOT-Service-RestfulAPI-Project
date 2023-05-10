@@ -1,19 +1,23 @@
 package com.example.Fproject.IotService;
 
+import com.example.Fproject.database.DatabaseService;
 import com.example.Fproject.database.entity.device;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.web.JsonPath;
 import org.springframework.web.bind.annotation.*;
-
+import org.json.JSONObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-
+import com.example.Fproject.IotService.IoTGatewayService;
 
 @RestController
 public class IotController {
-
     private IoTGatewayService ioTGatewayService;
-
+    public IotController(IoTGatewayService ioTGatewayService) {
+        this.ioTGatewayService=ioTGatewayService;
+    }
     @Operation(summary = "turn on the light", description = "Turn on the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value="/devices/{id}/on", method=RequestMethod.GET)
     public String turnOn(@RequestHeader(name = "Authorization") String accessToken,
@@ -22,7 +26,9 @@ public class IotController {
         try {
             String result = ioTGatewayService.powerOn(accessToken, id);
             if (result != null) {
-                return result;
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("Result", "Success");
+                return jsonObject.toString();
             } else {
                 throw new NullPointerException("The result of powerOn method is null.");
             }
@@ -41,9 +47,11 @@ public class IotController {
         try {
             String result = ioTGatewayService.powerOff(accessToken, id);
             if (result != null) {
-                return result;
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("Result", "Success");
+                return jsonObject.toString();
             } else {
-                throw new NullPointerException("The result of powerOn method is null.");
+                throw new NullPointerException("The result of poweroff method is null.");
             }
         } catch (NullPointerException e) {
             // Handle the exception here, such as logging or throwing a custom exception
@@ -56,18 +64,17 @@ public class IotController {
     public String getState(@RequestHeader(name = "Authorization") String accessToken,
                          @Parameter(description = "The key is a string composed of 6 digits", example = "ACDE12")
                          @PathVariable String id){
-        try {
             String result = ioTGatewayService.getState(accessToken, id);
             if (result != null) {
-                return result;
-            } else {
-                throw new NullPointerException("The result of powerOn method is null.");
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("State", result);
+                return jsonObject.toString();
             }
-        } catch (NullPointerException e) {
-            // Handle the exception here, such as logging or throwing a custom exception
-            e.printStackTrace();
-            return "Error: " + e.getMessage();
-        }
+            else {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("State", "failed");
+                return jsonObject.toString();
+            }
     }
     @Operation(summary = "modify device", description = "Modify the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value="/devices/{id}/alter", method=RequestMethod.PUT)
@@ -82,9 +89,20 @@ public class IotController {
     public String String (@RequestHeader(name = "Authorization") String accessToken,
                           @Parameter(description = "The key is a string composed of 6 digits", example = "ACDE12")
                          @PathVariable String id){
-        boolean s= ioTGatewayService.deleteDevice(accessToken, id);
-        if(s==true) return "Success";
-        else return "error";
+        try {
+            boolean result = ioTGatewayService.deleteDevice(accessToken, id);
+            if (result != false) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("Result", "Success");
+                return jsonObject.toString();
+            } else {
+                throw new NullPointerException("The result of delete method is null.");
+            }
+        } catch (NullPointerException e) {
+            // Handle the exception here, such as logging or throwing a custom exception
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
     }
 
     @Operation(summary = "add new device", description = "Add a device without authentication")

@@ -4,9 +4,16 @@ package com.example.Fproject.IotService;
 
 import com.example.Fproject.IotService.exception.UnauthorizedException;
 import com.example.Fproject.database.DatabaseService;
+import com.example.Fproject.database.DatabaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
+@Service
 public class IoTGatewayServiceImpl implements IoTGatewayService {
+    @Autowired
     private DatabaseService databaseService;
+    @Autowired
     private IoTConnecter ioTConnecter;
 
     public IoTGatewayServiceImpl(DatabaseService databaseService, IoTConnecter ioTConnecter) {

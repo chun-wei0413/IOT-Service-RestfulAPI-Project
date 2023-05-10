@@ -13,7 +13,7 @@ public class DatabaseInitializer {
 
     @PostConstruct
     public void init() {
-        deviceRepository.save(new device("001", "https://8a64-49-216-45-231.ngrok-free.app", "56YR34"));
+        deviceRepository.save(new device("001", "https://2112-49-216-45-231.ngrok-free.app", "56YR34"));
         deviceRepository.save(new device("002", "http://002", "97WER4"));
     }
 }
