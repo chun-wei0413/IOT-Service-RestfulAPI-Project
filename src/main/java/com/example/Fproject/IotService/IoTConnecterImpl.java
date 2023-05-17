@@ -46,7 +46,7 @@ public class IoTConnecterImpl implements IoTConnecter {
             }
         } 
         //發生例外狀況時，將錯誤訊息附加在response字串後面返回，存儲從IoT裝置接收到的數據或錯誤訊息。
-        //2222
+        //333333
         catch (IOException e) {
             response.append("Exception occurred while sending GET request: " + e.getMessage());
         }
