@@ -43,9 +43,16 @@ public class DatabaseServiceImpl implements DatabaseService {
 	}
 
 	@Override
-	public boolean alterDevice(String url) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean alterDevice(String id,String url) {
+		Optional<device> optionalDevice = deviceRepository.findById(id);
+		if (optionalDevice.isPresent()) {
+			device existingDevice = optionalDevice.get();
+			existingDevice.setUrl(url);
+			deviceRepository.save(existingDevice);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
