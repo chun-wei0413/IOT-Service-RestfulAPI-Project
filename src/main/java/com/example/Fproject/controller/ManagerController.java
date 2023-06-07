@@ -26,10 +26,9 @@ public class ManagerController {
     @RequestMapping(value = "/devices/{id}/alter", method = RequestMethod.PUT)
     public void alterDevice(@RequestHeader(name = "Authorization") String accessToken,
                             @Parameter(description = "The id is a string composed of 3 digit numbers", example = "001")
-                            @PathVariable String id,
-                            HttpServletRequest request) {
-        String requestUrl = request.getRequestURL().toString();
-        ioTGatewayService.alterDevice(accessToken, id, requestUrl);
+                            @PathVariable String id) {
+        String url="wwwwwwwwwwwwww";
+        ioTGatewayService.alterDevice(accessToken, id, url);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
