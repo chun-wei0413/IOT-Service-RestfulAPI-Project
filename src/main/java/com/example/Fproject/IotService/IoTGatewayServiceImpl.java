@@ -51,7 +51,7 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     @Override
     public boolean alterDevice(String key, String id, String url) {
         if(!databaseService.authorization(key, id)) return false;
-        return databaseService.alterDevice(url);
+        return databaseService.alterDevice(id,url);
     }
 
     @Override
