@@ -2,7 +2,8 @@ package com.example.Fproject.IotService;
 
 //import java.util.UUID;
 
-import com.example.Fproject.IotService.exception.UnauthorizedException;
+import com.example.Fproject.controller.exception.DataNotFoundException;
+import com.example.Fproject.controller.exception.IotExceptionHandler;
 import com.example.Fproject.database.DatabaseService;
 import com.example.Fproject.database.DatabaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +23,18 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     }
 
     @Override
-    public String powerOn(String key, String id) {
-        if(!databaseService.authorization(key, id)) throw new UnauthorizedException();;
-        return ioTConnecter.powerOn(databaseService.getUrl(id));
-
+    public String powerOn(String userId, String deviceId, String password) {
+        return "";
     }
 
     @Override
-    public String powerOff(String key, String id) {
-        if(!databaseService.authorization(key, id)) throw new UnauthorizedException();;
-        return ioTConnecter.powerOff(databaseService.getUrl(id));
+    public String powerOff(String userId, String deviceId, String password) {
+        return "";
     }
 
     @Override
-    public String getState(String key, String id) {
-        if(!databaseService.authorization(key, id)) throw new UnauthorizedException();;
-        return ioTConnecter.getState(databaseService.getUrl(id));
+    public String getState(String userId, String deviceId, String password) {
+        return "";
     }
 
     @Override
