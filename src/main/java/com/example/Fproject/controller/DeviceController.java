@@ -11,11 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 
-@Tag(name="IOT group")
+@Tag(name="Device Services API")
 @RestController
-public class ManagerController {
+public class DeviceController {
     @Autowired
     private IoTGatewayService ioTGatewayService;
     @Autowired
@@ -35,29 +34,12 @@ public class ManagerController {
 
     }
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "delete user", description = "Delete the user with authentication, otherwise it will be invalid.")
-    @RequestMapping(value="/user/delete", method=RequestMethod.DELETE)
-    public void deleteUser(){
-
-    }
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Query", description = "Query which devices the user owns")
-    @RequestMapping(value="devices/query", method=RequestMethod.POST)
+    @RequestMapping(value="devices/query", method=RequestMethod.GET)
     public void queryDevice(){
 
     }
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Authorization", description = "Authorized users can control specific devices")
-    @RequestMapping(value="device/author", method=RequestMethod.POST)
-    public void authorUser(){
 
-    }
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "add new user", description = "Add a user with authentication")
-    @RequestMapping(value="register/user", method=RequestMethod.POST)
-    public void registerUser(){
-
-    }
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "add new device", description = "Add a device with authentication")
     @RequestMapping(value="/devices/new", method=RequestMethod.POST)

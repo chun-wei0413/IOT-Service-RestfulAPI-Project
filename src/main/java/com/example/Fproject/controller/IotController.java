@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import com.example.Fproject.handler.APIHandler;
 
-@Tag(name="IOT control")
+@Tag(name="IOT control Services API")
 @RestController
 public class IotController {
     @Autowired
