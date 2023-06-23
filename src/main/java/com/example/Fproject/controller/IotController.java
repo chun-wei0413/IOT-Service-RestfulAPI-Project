@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import com.example.Fproject.handler.APIHandler;
 
-@Tag(name="IOT control")
+@Tag(name="IOT control Services API")
 @RestController
 public class IotController {
     @Autowired
@@ -25,7 +25,7 @@ public class IotController {
     public String turnOn(@Valid @RequestBody IotBean.PowerOnBean powerOnBean) {
         return apiHandler.powerOn(powerOnBean);
     }
-//hi
+
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "turn off the light", description = "Turn off the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/off", method = RequestMethod.GET)
