@@ -4,46 +4,40 @@ import com.example.Fproject.apibody.IotBean;
 import com.example.Fproject.IotService.IoTGatewayService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import com.example.Fproject.handler.APIHandler;
 
-@Tag(name="IOT control")
+@Tag(name="IOT control Services API")
 @RestController
 public class IotController {
+    @Autowired
     private IoTGatewayService ioTGatewayService;
+    @Autowired
+    private APIHandler apiHandler;
 
-    public IotController(IoTGatewayService ioTGatewayService) {
-        this.ioTGatewayService = ioTGatewayService;
-    }
-
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "turn on the light", description = "Turn on the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value = "/devices/{id}/on", method = RequestMethod.GET)
-    public void turnOn(@RequestHeader(name = "Authorization") String accessToken,
-                         @Parameter(description = "The id is a string composed of 3 digit numbers", example = "001")
-                         @PathVariable String id) {
-            String result = ioTGatewayService.powerOn(accessToken, id);
+    @RequestMapping(value = "/devices/on", method = RequestMethod.GET)
+    public String turnOn(@Valid @RequestBody IotBean.PowerOnBean powerOnBean) {
+        return apiHandler.powerOn(powerOnBean);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "turn off the light", description = "Turn off the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value = "/devices/{id}/off", method = RequestMethod.GET)
-    public void turnOff(@RequestHeader(name = "Authorization") String accessToken,
-                          @Parameter(description = "The id is a string composed of 3 digit numbers", example = "001")
-                          @PathVariable String id) {
-            ioTGatewayService.powerOff(accessToken, id);
+    @RequestMapping(value = "/devices/off", method = RequestMethod.GET)
+    public String turnOff(@Valid @RequestBody IotBean.PowerOffBean powerOffBean) {
+        return apiHandler.powerOff(powerOffBean);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Check the status of the light", description = "Check the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value = "/devices/{id}/state", method = RequestMethod.GET)
-    public void getState(@RequestHeader(name = "Authorization") String accessToken,
-                           @Parameter(description = "The id is a string composed of 3 digit numbers", example = "001")
-                           @PathVariable String id) {
-            ioTGatewayService.getState(accessToken, id);
+    @RequestMapping(value = "/devices/state", method = RequestMethod.GET)
+    public String getState(@Valid @RequestBody IotBean.GetStateBean getStateBean) {
+        return apiHandler.getState(getStateBean);
     }
 
 }
