@@ -1,7 +1,5 @@
 package com.example.Fproject.IotService;
 
-//import java.util.UUID;
-
 import com.example.Fproject.controller.exception.DataNotFoundException;
 import com.example.Fproject.controller.exception.IotExceptionHandler;
 import com.example.Fproject.database.DatabaseService;
