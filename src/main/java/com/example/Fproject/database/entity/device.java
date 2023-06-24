@@ -10,17 +10,27 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+
 @Entity
 @Table(name = "[device]")
 public class device {
     @Schema(description = "The id of the device, composed of three numbers.", example = "001")
     @Id
-    private String id;
+    private String deviceId;
     @Schema(description = "The url of the device",example = "http://XXX")
     @Column
     private String url;
     @Schema(description = "the key of authentication, Consists of six random capital letters and numbers",example = "23RDW5")
     @Column
     private String apiKey;
+    @Schema(description = "The type of the device,consists of letters.",example = "user")
+    @Column
+    private String type;
+    @Schema(description = "the pin consists of letters and numbers",example = "GPIO03")
+    @Column
+    private String pin;
+    @Schema(description = "the manager of the device,if the value is 0 it means a general user and 1 means the device manager.",example = "1")
+    @Column
+    private String manager;
 
 }
