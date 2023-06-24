@@ -43,7 +43,6 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     @Override
     public String[] addDevice(String url) {
         String[] response = new String[1];
-        //response[0] = UUID.randomUUID().toString();
         response[0] = databaseService.addDevice(url)[0];
         return response;
     }
