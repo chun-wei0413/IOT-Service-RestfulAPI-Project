@@ -1,5 +1,7 @@
 package com.example.Fproject.IotService;
 import com.example.Fproject.database.DatabaseService;
+import com.example.Fproject.IotService.IoTGatewayService;
+import com.example.Fproject.IotService.IoTGatewayServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pi4j.io.gpio.*;
@@ -8,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 
 @Service
 public class IoTConnecterImpl implements IoTConnecter {
@@ -26,21 +29,21 @@ public class IoTConnecterImpl implements IoTConnecter {
 
     @Override
     public String powerOn(String url) {
-        String requestUrl = url + "/on";
+        String requestUrl = url + "/devices/on";
         led.high(); // 開啟LED燈
         return sendGetRequest(requestUrl, "successful");
     }
 
     @Override
     public String powerOff(String url) {
-        String requestUrl = url + "/off";
+        String requestUrl = url + "/devices/off";
         led.low(); // 關閉LED燈
         return sendGetRequest(requestUrl, "successful");
     }
 
     @Override
     public String getState(String url) {
-        String requestUrl = url + "/state";
+        String requestUrl = url + "/devices/state";
         if (led.isHigh()) {
             return sendGetRequest(requestUrl, "on");
         }
