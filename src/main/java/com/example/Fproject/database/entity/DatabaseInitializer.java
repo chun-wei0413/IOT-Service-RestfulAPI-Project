@@ -15,8 +15,8 @@ public class DatabaseInitializer {
 
     @PostConstruct
     public void init() {
-        deviceRepository.save(new device("001", "https://2112-49-216-45-231.ngrok-free.app", "56YR34","light","GPIO003","0"));
-        deviceRepository.save(new device("002", "http://002", "97WER4","fan","GPIO456","1"));
+        deviceRepository.save(new device("001", "https://2112-49-216-45-231.ngrok-free.app","light","GPIO003","0"));
+        deviceRepository.save(new device("002", "http://002","fan","GPIO456","1"));
         userRepository.save(new user( "fanjiang", "97WER4"));
     }
 }
