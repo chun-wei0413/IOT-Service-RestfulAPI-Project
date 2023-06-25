@@ -20,9 +20,7 @@ public class device {
     @Schema(description = "The url of the device",example = "http://XXX")
     @Column
     private String url;
-    @Schema(description = "the key of authentication, Consists of six random capital letters and numbers",example = "23RDW5")
-    @Column
-    private String apiKey;
+
     @Schema(description = "The type of the device,consists of letters.",example = "user")
     @Column
     private String type;
