@@ -6,6 +6,7 @@ import com.example.Fproject.IotService.IoTConnecter;
 import com.example.Fproject.IotService.IoTConnecterImpl;
 import com.example.Fproject.controller.exception.DataNotFoundException;
 import com.example.Fproject.controller.exception.IotExceptionHandler;
+import com.example.Fproject.database.entity.device;
 import com.example.Fproject.database.DatabaseService;
 import com.example.Fproject.database.DatabaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,52 +17,63 @@ import org.springframework.stereotype.Service;
 public class IoTGatewayServiceImpl implements IoTGatewayService {
     @Autowired
     private DatabaseService databaseService;
+    private device Device;
     private IoTConnecter ioTConnecter;
     private IotController iotController;
     private DeviceController deviceController;
 
-    public IoTGatewayServiceImpl(DatabaseService databaseService, IoTConnecter ioTConnecter,IotController iotController,DeviceController deviceController) {
+    public IoTGatewayServiceImpl(DatabaseService databaseService, IoTConnecter ioTConnecter,IotController iotController,DeviceController deviceController,device Device) {
         this.databaseService = databaseService;
         this.ioTConnecter = ioTConnecter;
         this.iotController = iotController;
         this.deviceController = deviceController;
+        this.Device = Device;
+
     }
 
     @Override
     public String powerOn(String userId, String deviceId, String password) {
-        String url = DatabaseService.alterDevice().getUrl(userId, deviceId);
-        result = databaseService.alterDevice(url);
-        return result;
+        if(databaseService.authorization(userId,deviceId,password)) {
+            String url = device(url);
+            return url;
+        }
+        else return "fall";
     }
 
     @Override
     public String powerOff(String userId, String deviceId, String password) {
-        return "";
+        if(databaseService.authorization(userId,deviceId,password)) {
+            String url = device(url);
+            return url;
+        }
+        else return "fall";
     }
 
     @Override
     public String getState(String userId, String deviceId, String password) {
-        return "";
+        if(databaseService.authorization(userId,deviceId,password)) {
+            String url = device(url);
+            return url;
+        }
+        else return "fall";
     }
 
     @Override
     public String[] addDevice(String url,String type,String pin,String manager) {
         String[] response = new String[1];
-        //response[0] = databaseService.addDevice(url, type, pin, manager)[0];
+        response[0] = databaseService.addDevice(url, type, pin, manager)[0];
         return response;
     }
 
     @Override
     public boolean alterDevice(String key, String id, String url) {
-        //if(!databaseService.authorization(key, id)) return false;
-        //return databaseService.alterDevice(id,url);
-        return true;
+        if(!databaseService.authorization(key, id)) return false;
+        return databaseService.alterDevice(id,url);
     }
 
     @Override
     public boolean deleteDevice(String key,String id) {
-        //if(!databaseService.authorization(key, id)) return false;
-        //return databaseService.deleteDevice(id);
-        return true;
+        if(!databaseService.authorization(key, id)) return false;
+        return databaseService.deleteDevice(id);
     }
 }

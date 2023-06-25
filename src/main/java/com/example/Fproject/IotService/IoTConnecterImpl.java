@@ -10,17 +10,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Service
 public class IoTConnecterImpl implements IoTConnecter {
     @Autowired
     private DatabaseService databaseService;
+    private IoTGatewayService ioTGatewayService;
     private final GpioController gpio;
     private final GpioPinDigitalOutput led;
 
-    public IoTConnecterImpl(DatabaseService databaseService) {
+    public IoTConnecterImpl(DatabaseService databaseService,IoTGatewayService ioTGatewayService) {
         this.databaseService = databaseService;
+        this.ioTGatewayService = ioTGatewayService;
         gpio = GpioFactory.getInstance();
         //Pin ledPin = DatabaseService.pin;
         Pin ledPin = RaspiPin.GPIO_18;
@@ -72,16 +76,18 @@ public class IoTConnecterImpl implements IoTConnecter {
             response.append("Exception occurred while sending GET request: " + e.getMessage());
         }
         // 建立回應的 JSON 字串
-        //Gson gson = new Gson();
-        //response.append(gson.toJson(new ApiResponse(state)));
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            response.append(objectMapper.writeValueAsString(new ApiResponse(state)));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         return response.toString();
     }
 
     // 在程式結束時釋放 GPIO 資源
-    public void shutdown() {
-        gpio.shutdown();
-    }
+    //public void shutdown() {gpio.shutdown();}
 
     // 具有回應結果的 API 回應類別
     private static class ApiResponse {
