@@ -33,21 +33,21 @@ public class IoTConnecterImpl implements IoTConnecter {
 
     @Override
     public String powerOn(String url) {
-        String requestUrl = url + "/devices/on";
+        String requestUrl = url + "/on";
         led.high(); // 開啟LED燈
         return sendGetRequest(requestUrl, "successful");
     }
 
     @Override
     public String powerOff(String url) {
-        String requestUrl = url + "/devices/off";
+        String requestUrl = url + "/off";
         led.low(); // 關閉LED燈
         return sendGetRequest(requestUrl, "successful");
     }
 
     @Override
     public String getState(String url) {
-        String requestUrl = url + "/devices/state";
+        String requestUrl = url + "/state";
         if (led.isHigh()) {
             return sendGetRequest(requestUrl, "on");
         }
@@ -92,7 +92,6 @@ public class IoTConnecterImpl implements IoTConnecter {
     // 具有回應結果的 API 回應類別
     private static class ApiResponse {
         private String state;
-
         public ApiResponse(String state) {
             this.state = state;
         }

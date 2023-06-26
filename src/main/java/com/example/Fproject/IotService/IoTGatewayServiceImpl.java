@@ -6,7 +6,6 @@ import com.example.Fproject.IotService.IoTConnecter;
 import com.example.Fproject.IotService.IoTConnecterImpl;
 import com.example.Fproject.controller.exception.DataNotFoundException;
 import com.example.Fproject.controller.exception.IotExceptionHandler;
-import com.example.Fproject.database.entity.device;
 import com.example.Fproject.database.DatabaseService;
 import com.example.Fproject.database.DatabaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,32 +16,27 @@ import org.springframework.stereotype.Service;
 public class IoTGatewayServiceImpl implements IoTGatewayService {
     @Autowired
     private DatabaseService databaseService;
-    private device Device;
+    @Autowired
     private IoTConnecter ioTConnecter;
+    @Autowired
     private IotController iotController;
+    @Autowired
     private DeviceController deviceController;
 
-    public IoTGatewayServiceImpl(DatabaseService databaseService, IoTConnecter ioTConnecter,IotController iotController,DeviceController deviceController,device Device) {
-        this.databaseService = databaseService;
-        this.ioTConnecter = ioTConnecter;
-        this.iotController = iotController;
-        this.deviceController = deviceController;
-        this.Device = Device;
 
-    }
 
     @Override
     public String powerOn(String userId, String deviceId, String password) {
-        if(databaseService.authorization(userId,deviceId,password)) {
-            String url = device(url);
-            return url;
-        }
-        else return "fall";
+        databaseService.authorization(userId,deviceId,password);
+        //databaseService.authorization(deviceId,password);
+        string url = databaseService.getUrl(deviceId);
+        ioTConnecter.powerOn(url);
+        return "";
     }
 
     @Override
     public String powerOff(String userId, String deviceId, String password) {
-        if(databaseService.authorization(userId,deviceId,password)) {
+        databaseService.authorization(userId,deviceId,password);
             String url = device(url);
             return url;
         }
