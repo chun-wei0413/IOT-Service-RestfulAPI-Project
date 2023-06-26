@@ -11,34 +11,47 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Random;
-import java.util.Optional;
 
 @Service
 public class DatabaseServiceImpl implements DatabaseService {
 
 	@Autowired
 	private deviceRepository deviceRepository;
+	@Autowired
 	private userRepository userRepository;
+	@Autowired
 	private userDeviceRepository userDeviceRepository;
 
+	public DatabaseServiceImpl(com.example.Fproject.database.dao.deviceRepository deviceRepository, com.example.Fproject.database.dao.userRepository userRepository, com.example.Fproject.database.dao.userDeviceRepository userDeviceRepository) {
+		this.deviceRepository = deviceRepository;
+		this.userRepository = userRepository;
+		this.userDeviceRepository = userDeviceRepository;
+	}
+
 	@Override
-	public boolean authorization(String userId,String deviceId,String password) {
-		//user會有每一個家電的password若使用者的password輸入正確則表示具有該device的控制權限
-
-		user user=userRepository.findById(userId).orElse(null);
+	public boolean authorization(String userId,String deviceId) {
+		//授權
+		userDevice userDevice=userDeviceRepository.findById(userId).orElse(null);
 		//若user找到對應的id，則User會有該筆id對應到的password，否則為null
-		device device=deviceRepository.findById(deviceId).orElse(null);
 
-		if(user!=null&& Objects.equals(user.getPassword(),password)){
-			userDevice userDevice=new userDevice(user,device);
-			userDeviceRepository.save(userDevice);
+		if(userDevice!=null&&Objects.equals(userDevice.getDevice().getDeviceId(),deviceId)){
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public boolean addDevice(String url,String type,String pin,String manager) {
+	public boolean authentication(String userId,String password){
+		//驗證
+		user user=userRepository.findById(userId).orElse(null);
+		if(Objects.equals(user.getPassword(),password)){
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean addDevice(String url,String type,String pin,String userId) {
 		// TODO Auto-generated method stub
 		//新增裝置
 
@@ -49,7 +62,8 @@ public class DatabaseServiceImpl implements DatabaseService {
 		device.setUrl(url);
 		device.setType(type);
 		device.setPin(pin);
-		device.setManager(manager);
+		device.setManager(userId);
+
 
 		try{
 			deviceRepository.save(device);
@@ -64,37 +78,30 @@ public class DatabaseServiceImpl implements DatabaseService {
 	}
 
 	@Override
-	public boolean alterDevice(String userId,String password,String deviceId,String url) {
+	public boolean alterDevice(String userId,String deviceId,String url) {
 		// TODO Auto-generated method stub
 		//改變裝置的url
-		user user=userRepository.findById(userId).orElse(null);
-		if(user!=null&&Objects.equals(user.getPassword(),password)){
-			device device=deviceRepository.findById(deviceId).orElse(null);
-			if(device!=null) {
-				device.setUrl(url);
-				deviceRepository.save(device);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean deleteDevice(String userId,String deviceId,String password) {
-		//刪除裝置
 		device device=deviceRepository.findById(deviceId).orElse(null);
-
-		try{
-			if(device!=null){
-				deviceRepository.delete(device);
-				return true;
-			}
-		}catch(Exception e){
-			System.out.println("Error"+e.getMessage());
+		if(device!=null&&Objects.equals(device.getManager(),userId)){
+			device.setUrl(url);
+			deviceRepository.save(device);
+			return true;
+		}else{
 			return false;
 		}
 
-		return false;
+	}
+
+	@Override
+	public boolean deleteDevice(String deviceId,String userId) {
+		//刪除裝置
+		device device=deviceRepository.findById(deviceId).orElse(null);
+		if(device!=null&&Objects.equals(device.getManager(),userId)){
+			deviceRepository.delete(device);
+			return true;
+		}else{
+			return false;
+		}
 
 	}
 
@@ -110,25 +117,23 @@ public class DatabaseServiceImpl implements DatabaseService {
 		}
 
 	}
-
-	@Override
-	public device queryDevice(String userId, String password){
-
+	public boolean deleteUser(String userId,String password){
 		user user=userRepository.findById(userId).orElse(null);
-
 		if(user!=null&&Objects.equals(user.getPassword(),password)){
-			Optional<userDevice> userDevice=userDeviceRepository.findById(userId);
-			if(userDevice.isPresent()){
-				String deviceId=userDevice.get().getDevice().getDeviceId();
-				device device=deviceRepository.findById(deviceId).orElse(null);
-				return device;
-			}
-
+			userRepository.delete(user);
+			return true;
+		}else{
+			return false;
 		}
-		return null;
 	}
-
-
+	public String getUrl(String deviceId){
+		device device=deviceRepository.findById(deviceId).orElse(null);
+		if(device!=null){
+			return device.getUrl();
+		}else{
+			return null;
+		}
+	}
 
 	private String generateRandomId(){
 		Random random=new Random();
