@@ -24,6 +24,7 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
     @Override
     public String powerOn(String userId, String deviceId, String password) {
+
         return "";
     }
 
