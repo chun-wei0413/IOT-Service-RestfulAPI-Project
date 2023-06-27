@@ -1,9 +1,12 @@
 package com.example.Fproject.database.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
+import com.example.Fproject.database.entity.Device;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -12,7 +15,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "[user]")
-public class user {
+public class User {
     @Schema(description = "The id of the user, composed of letters and numbers.", example = "fanjiang")
     //@schema屬性描述
     @Id
@@ -22,4 +25,10 @@ public class user {
     @Column
     private String password;
 
+    @ManyToMany(targetEntity = Device.class, cascade = CascadeType.ALL)
+    @JoinTable(name = "User_Device",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "userId")},
+            inverseJoinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "deviceId")}
+    )
+    private Set<Device> device = new HashSet<Device>();
 }
