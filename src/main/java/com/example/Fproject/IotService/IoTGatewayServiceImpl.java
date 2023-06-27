@@ -1,13 +1,9 @@
 package com.example.Fproject.IotService;
 
-import com.example.Fproject.controller.DeviceController;
-import com.example.Fproject.controller.IotController;
 import com.example.Fproject.IotService.IoTConnecter;
-import com.example.Fproject.IotService.IoTConnecterImpl;
 import com.example.Fproject.controller.exception.DataNotFoundException;
 import com.example.Fproject.controller.exception.IotExceptionHandler;
 import com.example.Fproject.database.DatabaseService;
-import com.example.Fproject.database.DatabaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -24,12 +20,11 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     private DatabaseService databaseService;
     @Autowired
     private IoTConnecter ioTConnecter;
-    @Autowired
-    private IotController iotController;
-    @Autowired
-    private DeviceController deviceController;
 
-
+    public IoTGatewayServiceImpl(DatabaseService databaseService, IoTConnecter ioTConnecter) {
+        this.databaseService = databaseService;
+        this.ioTConnecter = ioTConnecter;
+    }
 
     @Override
     public String powerOn(String userId, String deviceId, String password) {
@@ -62,22 +57,24 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     }
 
     @Override
-    public boolean addDevice(String url,String type,String pin,String manager) {
-
-        databaseService.addDevice(url, type, pin, manager);
-        return true;
+    public boolean addDevice(String url,String type,String pin,String userId,String password) {
+        databaseService.authentication(userId,password);
+        return databaseService.addDevice(url, type, pin, userId);
     }
 
     @Override
-    public boolean alterDevice(String key, String id, String url) {
-        if(!databaseService.authorization(key, id)) return false;
-        return databaseService.alterDevice(id,url);
+    public boolean alterDevice(String userId, String password,String deviceId,String url) {
+        databaseService.authentication(userId,password);
+        databaseService.authorization(userId,deviceId);
+        return databaseService.alterDevice(userId,deviceId,url);
+
     }
 
     @Override
     public boolean deleteDevice(String key,String id) {
-        if(!databaseService.authorization(key, id)) return false;
-        return databaseService.deleteDevice(id);
+        databaseService.authentication(userId,password);
+        databaseService.authorization(userId,deviceId);
+        return databaseService.alterDevice(userId,deviceId,url);
     }
     private String sendGetRequest(String requestUrl) {
         StringBuilder response = new StringBuilder();

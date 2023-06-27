@@ -4,7 +4,7 @@ public interface IoTGatewayService {
 	String powerOn(String userId,String deviceId,String password);
 	String powerOff(String userId,String deviceId,String password);
 	String getState(String userId,String deviceId,String password);
-	String[] addDevice(String url); 
-	boolean alterDevice(String key,String id,String url); 
-	boolean deleteDevice(String key,String id);
+	boolean addDevice(String url,String type,String pin,String manager);
+	boolean alterDevice( String userId,String password,String deviceId,String url);
+	boolean deleteDevice(String password,String userId);
 }
