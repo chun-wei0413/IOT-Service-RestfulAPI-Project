@@ -22,14 +22,18 @@ public class init {
     public void init() {
             User user = new User();
             user.setUserId("fanjiang");
-            Device device1 = new Device();
-            device1.setDeviceId("001");
-            Device device2 = new Device();
-            device2.setDeviceId("002");
-            Set<Device> devices = new HashSet<>();
-            devices.add(device1);
-            devices.add(device2);
-            user.setDevice(devices);
-            userRepository.save(user);
+            user.setPassword("12345");
+            //Device device1 = new Device();
+            //device1.setDeviceId("001");
+            //Device device2 = new Device();
+            //device2.setDeviceId("002");
+            //Set<Device> devices = new HashSet<>();
+            //devices.add(device1);
+            //devices.add(device2);
+            //user.setDevice(devices);
+            //userRepository.save(user);*/
+
+
+
     }
 }
