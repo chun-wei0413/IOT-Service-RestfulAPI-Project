@@ -7,7 +7,6 @@ import com.example.Fproject.database.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,9 +30,7 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
         databaseService.authorization(userId,password);
         databaseService.authentication(deviceId,password);
         String url = databaseService.getUrl(deviceId);
-        ioTConnecter.powerOn(url);
-        String requestUrl = url + "/on";
-        return sendGetRequest(requestUrl);
+        return ioTConnecter.powerOn(url);
     }
 
     @Override
@@ -41,9 +38,7 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
         databaseService.authorization(userId,password);
         databaseService.authentication(deviceId,password);
         String url = databaseService.getUrl(deviceId);
-        ioTConnecter.powerOn(url);
-        String requestUrl = url + "/off";
-        return sendGetRequest(requestUrl);
+        return ioTConnecter.powerOff(url);
     }
 
     @Override
@@ -51,19 +46,16 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
         databaseService.authorization(userId,password);
         databaseService.authentication(deviceId,password);
         String url = databaseService.getUrl(deviceId);
-        ioTConnecter.powerOn(url);
-        String requestUrl = url + "/state";
-        return sendGetRequest(requestUrl);
+        return ioTConnecter.getState(url);
     }
 
     @Override
-    public boolean addDevice(String url,String type,String pin,String userId,String password) {
-        databaseService.authentication(userId,password);
+    public boolean addDevice(String url,String type,String pin,String userId) {
         return databaseService.addDevice(url, type, pin, userId);
     }
 
     @Override
-    public boolean alterDevice(String userId, String password,String deviceId,String url) {
+    public boolean alterDevice(String userId,String password,String deviceId,String url) {
         databaseService.authentication(userId,password);
         databaseService.authorization(userId,deviceId);
         return databaseService.alterDevice(userId,deviceId,url);
@@ -71,31 +63,10 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     }
 
     @Override
-    public boolean deleteDevice(String key,String id) {
+    public boolean deleteDevice(String userId,String password,String deviceId) {
         databaseService.authentication(userId,password);
         databaseService.authorization(userId,deviceId);
-        return databaseService.alterDevice(userId,deviceId,url);
+        return databaseService.deleteDevice(userId,deviceId);
     }
-    private String sendGetRequest(String requestUrl) {
-        StringBuilder response = new StringBuilder();
-        try {
-            URL url = new URL(requestUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
 
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                in.close();
-            }
-            else {
-                response.append("GET request failed with response code: " + responseCode);
-            }
-        }
-        catch (IOException e) {
-            response.append("Exception occurred while sending GET request: " + e.getMessage());
-        }
-
-        return response.toString();
-    }
 }
