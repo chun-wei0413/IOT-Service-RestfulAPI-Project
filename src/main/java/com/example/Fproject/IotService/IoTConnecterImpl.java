@@ -44,6 +44,7 @@ public class IoTConnecterImpl implements IoTConnecter {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 in.close();
+                response.append(responseCode);
             }
             else {
                 response.append("GET request failed with response code: " + responseCode);
