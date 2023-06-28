@@ -7,4 +7,6 @@ public interface IoTGatewayService {
 	boolean addDevice(String url,String type,String pin,String userId);
 	boolean alterDevice(String userId,String password,String deviceId,String url);
 	boolean deleteDevice(String userId,String password,String deviceId);
+	boolean registerUser(String userId,String password);
+	boolean deleteUser(String userId,String password);
 }

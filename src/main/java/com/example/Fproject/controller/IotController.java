@@ -23,6 +23,10 @@ public class IotController {
     @Operation(summary = "turn on the light", description = "Turn on the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/on", method = RequestMethod.GET)
     public String turnOn(@Valid @RequestBody IotBean.PowerOnBean powerOnBean) {
+        String userId = powerOnBean.getUserId();
+        String deviceId = powerOnBean.getDeviceId();
+        String password = powerOnBean.getPassword();
+        ioTGatewayService.powerOn(userId,deviceId,password);
         return apiHandler.powerOn(powerOnBean);
     }
 
@@ -30,6 +34,10 @@ public class IotController {
     @Operation(summary = "turn off the light", description = "Turn off the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/off", method = RequestMethod.GET)
     public String turnOff(@Valid @RequestBody IotBean.PowerOffBean powerOffBean) {
+        String userId = powerOffBean.getUserId();
+        String deviceId = powerOffBean.getDeviceId();
+        String password = powerOffBean.getPassword();
+        ioTGatewayService.powerOff(userId,deviceId,password);
         return apiHandler.powerOff(powerOffBean);
     }
 
@@ -37,6 +45,10 @@ public class IotController {
     @Operation(summary = "Check the status of the light", description = "Check the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/state", method = RequestMethod.GET)
     public String getState(@Valid @RequestBody IotBean.GetStateBean getStateBean) {
+        String userId = getStateBean.getUserId();
+        String deviceId = getStateBean.getDeviceId();
+        String password = getStateBean.getPassword();
+        ioTGatewayService.getState(userId,deviceId,password);
         return apiHandler.getState(getStateBean);
     }
 

@@ -23,7 +23,9 @@ public class UserController {
     @Operation(summary = "delete user", description = "Delete the user with authentication, otherwise it will be invalid.")
     @RequestMapping(value="/user/delete", method=RequestMethod.DELETE)
     public void deleteUser(@Valid @RequestBody UserBean.DeleteUserBean deleteUserBean){
-
+        String userId = deleteUserBean.getUserId();
+        String password = deleteUserBean.getPassword();
+        ioTGatewayService.deleteUser(userId,password);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -36,7 +38,9 @@ public class UserController {
     @Operation(summary = "add new user", description = "Add a user with authentication")
     @RequestMapping(value="/user/register", method=RequestMethod.POST)
     public void registerUser(@Valid @RequestBody UserBean.RegisterUserBean registerUserBean){
-
+        String userId = registerUserBean.getUserId();
+        String password = registerUserBean.getPassword();
+        ioTGatewayService.registerUser(userId,password);
     }
 
 

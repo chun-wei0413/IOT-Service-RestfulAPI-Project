@@ -1,17 +1,17 @@
 package com.example.Fproject.IotService;
 
-import com.example.Fproject.IotService.IoTConnecter;
-import com.example.Fproject.controller.exception.DataNotFoundException;
-import com.example.Fproject.controller.exception.IotExceptionHandler;
+//import com.example.Fproject.IotService.IoTConnecter;
+//import com.example.Fproject.controller.exception.DataNotFoundException;
+//import com.example.Fproject.controller.exception.IotExceptionHandler;
 import com.example.Fproject.database.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+//import java.io.BufferedReader;
+//import java.io.IOException;
+//import java.io.InputStreamReader;
+//import java.net.HttpURLConnection;
+//import java.net.URL;
 
 @Service
 public class IoTGatewayServiceImpl implements IoTGatewayService {
@@ -48,7 +48,6 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
         String url = databaseService.getUrl(deviceId);
         return ioTConnecter.getState(url);
     }
-
     @Override
     public boolean addDevice(String url,String type,String pin,String userId) {
         return databaseService.addDevice(url, type, pin, userId);
@@ -68,5 +67,12 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
         databaseService.authorization(userId,deviceId);
         return databaseService.deleteDevice(userId,deviceId);
     }
-
+    @Override
+    public boolean registerUser(String userId,String password){
+        return databaseService.registerUser(userId,password);
+    }
+    @Override
+    public boolean deleteUser(String userId,String password){
+        return databaseService.deleteUser(userId,password);
+    }
 }
