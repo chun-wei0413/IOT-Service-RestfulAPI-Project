@@ -21,8 +21,9 @@ public class init {
     @PostConstruct
     public void init() {
             User user = new User();
-            user.setUserId("fanjiang");
+            user.setUserId("wqr002");
             user.setPassword("12345");
+            userRepository.save(user);
             //Device device1 = new Device();
             //device1.setDeviceId("001");
             //Device device2 = new Device();

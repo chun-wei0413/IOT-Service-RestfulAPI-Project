@@ -19,24 +19,26 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
     @Override
     public String powerOn(String userId, String deviceId, String password) {
-        //databaseService.authorization(userId,password);
-        databaseService.authentication(deviceId,password);
-        String url = databaseService.getUrl(deviceId);
-        return ioTConnecter.powerOn(url);
+        //databaseService.authorization(userId,deviceId);
+        if(databaseService.authentication(userId,password)){
+            String url = databaseService.getUrl(deviceId);
+            return ioTConnecter.powerOn(url);
+        }
+        return "hah";
     }
 
     @Override
     public String powerOff(String userId, String deviceId, String password) {
-        //databaseService.authorization(userId,password);
-        //databaseService.authentication(deviceId,password);
+        //databaseService.authorization(userId,deviceId);
+        //databaseService.authentication(userId,password);
         String url = databaseService.getUrl(deviceId);
         return ioTConnecter.powerOff(url);
     }
 
     @Override
     public String getState(String userId, String deviceId, String password) {
-        //databaseService.authorization(userId,password);
-        //databaseService.authentication(deviceId,password);
+        //databaseService.authorization(userId,deviceId);
+        //databaseService.authentication(userId,password);
         String url = databaseService.getUrl(deviceId);
         return ioTConnecter.getState(url);
     }

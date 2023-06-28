@@ -35,7 +35,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     public boolean authentication(String userId,String password){
         //驗證
         User user=userRepository.findById(userId).orElse(null);
-        if(user!=null&&Objects.equals(user.getPassword(),password)){
+        if(user!=null&&user.getPassword().equals(password)){
             return true;
         }
         return false;
