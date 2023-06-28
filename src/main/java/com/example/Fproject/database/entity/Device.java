@@ -5,15 +5,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-
 @Entity
 @Table(name = "[device]")
-public class device {
+public class Device {
     @Schema(description = "The id of the device, composed of three numbers.", example = "001")
     @Id
     private String deviceId;
@@ -31,4 +33,6 @@ public class device {
     @Column
     private String manager;
 
+    @ManyToMany(mappedBy = "device")
+    private Set<User> user = new HashSet<User>();
 }
