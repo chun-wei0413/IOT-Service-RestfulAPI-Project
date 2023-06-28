@@ -11,12 +11,12 @@ import lombok.*;
 @Entity
 
 public class userDevice {
-    @ManyToOne
+    @ManyToMany
     @Id
     @JoinColumn(name="user_id_fk",referencedColumnName = "userId")
     private user user;
 
-    @ManyToOne
+    @ManyToMany
     @Id
     @JoinColumn(name="device_id_fk",referencedColumnName ="deviceId")
     private device device;

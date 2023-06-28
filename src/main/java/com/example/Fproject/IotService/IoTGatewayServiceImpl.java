@@ -1,10 +1,9 @@
 package com.example.Fproject.IotService;
 
+//import java.util.UUID;
 
-import com.example.Fproject.controller.IotController;
-import com.example.Fproject.IotService.IoTConnecter;
-import com.example.Fproject.IotService.IoTConnecterImpl;
-
+import com.example.Fproject.controller.exception.DataNotFoundException;
+import com.example.Fproject.controller.exception.IotExceptionHandler;
 import com.example.Fproject.database.DatabaseService;
 import com.example.Fproject.database.DatabaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,43 +14,46 @@ import org.springframework.stereotype.Service;
 public class IoTGatewayServiceImpl implements IoTGatewayService {
     @Autowired
     private DatabaseService databaseService;
+    @Autowired
     private IoTConnecter ioTConnecter;
-    private IotController iotController;
 
-
-
-
-    @Override
-    public String powerOn(String key, String id) {
-        return null;
+    public IoTGatewayServiceImpl(DatabaseService databaseService, IoTConnecter ioTConnecter) {
+        this.databaseService = databaseService;
+        this.ioTConnecter = ioTConnecter;
     }
 
     @Override
-    public String powerOff(String key, String id) {
-        return null;
+    public String powerOn(String userId, String deviceId, String password) {
+        return "";
     }
 
     @Override
-    public String getState(String key, String id) {
-        return null;
+    public String powerOff(String userId, String deviceId, String password) {
+        return "";
+    }
+
+    @Override
+    public String getState(String userId, String deviceId, String password) {
+        return "";
     }
 
     @Override
     public String[] addDevice(String url) {
-        return new String[0];
+        String[] response = new String[1];
+        //response[0] = UUID.randomUUID().toString();
+        response[0] = databaseService.addDevice(url)[0];
+        return response;
     }
 
     @Override
     public boolean alterDevice(String key, String id, String url) {
-        //if(!databaseService.authorization(key, id)) return false;
-        //return databaseService.alterDevice(id,url);
-        return true;
+        if(!databaseService.authorization(key, id)) return false;
+        return databaseService.alterDevice(id ,url);
     }
 
     @Override
     public boolean deleteDevice(String key,String id) {
-        //if(!databaseService.authorization(key, id)) return false;
-        //return databaseService.deleteDevice(id);
-        return true;
+        if(!databaseService.authorization(key, id)) return false;
+        return databaseService.deleteDevice(id);
     }
 }
