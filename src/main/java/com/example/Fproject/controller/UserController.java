@@ -1,10 +1,9 @@
 package com.example.Fproject.controller;
 
 import com.example.Fproject.IotService.IoTGatewayService;
-import com.example.Fproject.apibody.IotBean;
+import com.example.Fproject.apibody.UserBean;
 import com.example.Fproject.handler.APIHandler;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +22,20 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "delete user", description = "Delete the user with authentication, otherwise it will be invalid.")
     @RequestMapping(value="/user/delete", method=RequestMethod.DELETE)
-    public void deleteUser(){
+    public void deleteUser(@Valid @RequestBody UserBean.DeleteUserBean deleteUserBean){
 
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Authorization", description = "Authorized users can control specific devices")
     @RequestMapping(value="/user/author", method=RequestMethod.POST)
-    public void authorUser(){
+    public void authorUser(@Valid @RequestBody UserBean.AuthorUserBean authorUserBean){
 
     }
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "add new user", description = "Add a user with authentication")
     @RequestMapping(value="/user/register", method=RequestMethod.POST)
-    public void registerUser(){
+    public void registerUser(@Valid @RequestBody UserBean.RegisterUserBean registerUserBean){
 
     }
 
