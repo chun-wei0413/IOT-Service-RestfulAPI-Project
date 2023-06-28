@@ -19,28 +19,44 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
     @Override
     public String powerOn(String userId, String deviceId, String password) {
-        //databaseService.authorization(userId,deviceId);
         if(databaseService.authentication(userId,password)){
-            String url = databaseService.getUrl(deviceId);
-            return ioTConnecter.powerOn(url);
+            if(databaseService.authorization(userId,deviceId)){
+                String url = databaseService.getUrl(deviceId);
+                return ioTConnecter.powerOn(url);
+            }else{
+                return "permission failed";
+            }
+
         }
-        return "hah";
+        return "authentication fail";
     }
 
     @Override
     public String powerOff(String userId, String deviceId, String password) {
-        //databaseService.authorization(userId,deviceId);
-        //databaseService.authentication(userId,password);
-        String url = databaseService.getUrl(deviceId);
-        return ioTConnecter.powerOff(url);
+        if(databaseService.authentication(userId,password)){
+            if(databaseService.authorization(userId,deviceId)){
+                String url = databaseService.getUrl(deviceId);
+                return ioTConnecter.powerOff(url);
+            }else{
+                return "permission failed";
+            }
+
+        }
+        return "authentication fail";
     }
 
     @Override
     public String getState(String userId, String deviceId, String password) {
-        //databaseService.authorization(userId,deviceId);
-        //databaseService.authentication(userId,password);
-        String url = databaseService.getUrl(deviceId);
-        return ioTConnecter.getState(url);
+        if(databaseService.authentication(userId,password)){
+            if(databaseService.authorization(userId,deviceId)){
+                String url = databaseService.getUrl(deviceId);
+                return ioTConnecter.getState(url);
+            }else{
+                return "permission failed";
+            }
+
+        }
+        return "authentication fail";
     }
     @Override
     public boolean addDevice(String url,String type,String pin,String userId) {

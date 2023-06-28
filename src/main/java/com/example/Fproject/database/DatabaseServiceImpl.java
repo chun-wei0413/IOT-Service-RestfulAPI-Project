@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 
 @Service
 public class DatabaseServiceImpl implements DatabaseService {
@@ -28,7 +29,14 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public boolean authorization(String userId,String deviceId) {
         //授權
-        return true;
+        User user=userRepository.findById(userId).orElse(null);
+        Set<Device> devices=user.getDevice();
+        for(Device device : devices){
+            if(device.getDeviceId().equals(deviceId)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -73,7 +81,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         // TODO Auto-generated method stub
         //改變裝置的url
         Device device=deviceRepository.findById(deviceId).orElse(null);
-        if(device!=null&&Objects.equals(device.getManager(),userId)){
+        if(device!=null&&device.getManager().equals(userId)){
             device.setUrl(url);
             deviceRepository.save(device);
             return true;
@@ -87,7 +95,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     public boolean deleteDevice(String deviceId,String userId) {
         //刪除裝置
         Device device=deviceRepository.findById(deviceId).orElse(null);
-        if(device!=null&&Objects.equals(device.getManager(),userId)){
+        if(device!=null&&device.getManager().equals(userId)){
             deviceRepository.delete(device);
             return true;
         }else{
@@ -112,7 +120,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
     public boolean deleteUser(String userId,String password){
         User user=userRepository.findById(userId).orElse(null);
-        if(user!=null&&Objects.equals(user.getPassword(),password)){
+        if(user!=null&&user.getPassword().equals(password)){
             userRepository.delete(user);
             return true;
         }else{
