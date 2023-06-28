@@ -1,14 +1,17 @@
 package com.example.Fproject.IotService;
 
-//import java.util.UUID;
-
-import com.example.Fproject.controller.exception.DataNotFoundException;
-import com.example.Fproject.controller.exception.IotExceptionHandler;
+//import com.example.Fproject.IotService.IoTConnecter;
+//import com.example.Fproject.controller.exception.DataNotFoundException;
+//import com.example.Fproject.controller.exception.IotExceptionHandler;
 import com.example.Fproject.database.DatabaseService;
-import com.example.Fproject.database.DatabaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+//import java.io.BufferedReader;
+//import java.io.IOException;
+//import java.io.InputStreamReader;
+//import java.net.HttpURLConnection;
+//import java.net.URL;
 
 @Service
 public class IoTGatewayServiceImpl implements IoTGatewayService {
@@ -24,36 +27,52 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
     @Override
     public String powerOn(String userId, String deviceId, String password) {
-        return "";
+        databaseService.authorization(userId,password);
+        databaseService.authentication(deviceId,password);
+        String url = databaseService.getUrl(deviceId);
+        return ioTConnecter.powerOn(url);
     }
 
     @Override
     public String powerOff(String userId, String deviceId, String password) {
-        return "";
+        databaseService.authorization(userId,password);
+        databaseService.authentication(deviceId,password);
+        String url = databaseService.getUrl(deviceId);
+        return ioTConnecter.powerOff(url);
     }
 
     @Override
     public String getState(String userId, String deviceId, String password) {
-        return "";
+        databaseService.authorization(userId,password);
+        databaseService.authentication(deviceId,password);
+        String url = databaseService.getUrl(deviceId);
+        return ioTConnecter.getState(url);
+    }
+    @Override
+    public boolean addDevice(String url,String type,String pin,String userId) {
+        return databaseService.addDevice(url, type, pin, userId);
     }
 
     @Override
-    public String[] addDevice(String url) {
-        String[] response = new String[1];
-        //response[0] = UUID.randomUUID().toString();
-        response[0] = databaseService.addDevice(url)[0];
-        return response;
+    public boolean alterDevice(String userId,String password,String deviceId,String url) {
+        databaseService.authentication(userId,password);
+        databaseService.authorization(userId,deviceId);
+        return databaseService.alterDevice(userId,deviceId,url);
+
     }
 
     @Override
-    public boolean alterDevice(String key, String id, String url) {
-        if(!databaseService.authorization(key, id)) return false;
-        return databaseService.alterDevice(id ,url);
+    public boolean deleteDevice(String userId,String password,String deviceId) {
+        databaseService.authentication(userId,password);
+        databaseService.authorization(userId,deviceId);
+        return databaseService.deleteDevice(userId,deviceId);
     }
-
     @Override
-    public boolean deleteDevice(String key,String id) {
-        if(!databaseService.authorization(key, id)) return false;
-        return databaseService.deleteDevice(id);
+    public boolean registerUser(String userId,String password){
+        return databaseService.registerUser(userId,password);
+    }
+    @Override
+    public boolean deleteUser(String userId,String password){
+        return databaseService.deleteUser(userId,password);
     }
 }
