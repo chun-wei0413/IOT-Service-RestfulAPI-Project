@@ -23,22 +23,14 @@ public class DeviceController {
     @Operation(summary = "modify device", description = "Modify the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/alter", method = RequestMethod.PUT)
     public void alterDevice(@Valid @RequestBody DeviceBean.AlterDeviceBean alterDeviceBean) {
-        String userId = alterDeviceBean.getUserId();
-        String password = alterDeviceBean.getPassword();
-        String deviceId = alterDeviceBean.getDeviceId();
-        String url = alterDeviceBean.getUrl();
-        ioTGatewayService.alterDevice(userId,password,deviceId,url);
+        apiHandler.alterDevice(alterDeviceBean);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "delete device", description = "Delete the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value="/devices/delete", method=RequestMethod.DELETE)
     public void deleteDevice(@Valid @RequestBody DeviceBean.DeleteDeviceBean deleteDeviceBean){
-        String userId = deleteDeviceBean.getUserId();
-        String password = deleteDeviceBean.getPassword();
-        String deviceID = deleteDeviceBean.getDeviceId();
-        ioTGatewayService.deleteDevice(userId,password,deviceID);
-
+        apiHandler.deleteDevice(deleteDeviceBean);
     }
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Query", description = "Query which devices the user owns")
@@ -51,11 +43,7 @@ public class DeviceController {
     @Operation(summary = "add new device", description = "Add a device with authentication")
     @RequestMapping(value="/devices/new", method=RequestMethod.POST)
     public void addDevice(@Valid @RequestBody DeviceBean.AddDeviceBean addDeviceBean){
-        String url = addDeviceBean.getUrl();
-        String type = addDeviceBean.getType();
-        String pin = addDeviceBean.getPin();
-        String userId = addDeviceBean.getManager();
-        ioTGatewayService.addDevice(url,type,pin,userId);
+        apiHandler.addDevice(addDeviceBean);
     }
 
 }
