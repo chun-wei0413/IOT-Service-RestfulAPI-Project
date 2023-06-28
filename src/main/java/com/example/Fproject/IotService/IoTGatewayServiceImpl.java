@@ -1,17 +1,9 @@
 package com.example.Fproject.IotService;
 
-//import com.example.Fproject.IotService.IoTConnecter;
-//import com.example.Fproject.controller.exception.DataNotFoundException;
-//import com.example.Fproject.controller.exception.IotExceptionHandler;
+
 import com.example.Fproject.database.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-//import java.io.BufferedReader;
-//import java.io.IOException;
-//import java.io.InputStreamReader;
-//import java.net.HttpURLConnection;
-//import java.net.URL;
 
 @Service
 public class IoTGatewayServiceImpl implements IoTGatewayService {
