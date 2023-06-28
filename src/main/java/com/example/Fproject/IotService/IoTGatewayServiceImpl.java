@@ -65,17 +65,28 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
     @Override
     public boolean alterDevice(String userId,String password,String deviceId,String url) {
-        //databaseService.authentication(userId,password);
-        databaseService.authorization(userId,deviceId);
-        return databaseService.alterDevice(userId,deviceId,url);
+        if(databaseService.authentication(userId,password)){
+            if(databaseService.authorization(userId,deviceId)){
+                return databaseService.alterDevice(userId,deviceId,url);
+            }else{
+                return false;
+            }
 
+        }
+        return false;
     }
 
     @Override
     public boolean deleteDevice(String userId,String password,String deviceId) {
-        databaseService.authentication(userId,password);
-        databaseService.authorization(userId,deviceId);
-        return databaseService.deleteDevice(userId,deviceId);
+        if(databaseService.authentication(userId,password)){
+            if(databaseService.authorization(userId,deviceId)){
+                return databaseService.deleteDevice(userId,deviceId);
+            }else{
+                return false;
+            }
+
+        }
+        return false;
     }
     @Override
     public boolean registerUser(String userId,String password){
