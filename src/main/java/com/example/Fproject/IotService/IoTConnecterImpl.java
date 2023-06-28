@@ -1,16 +1,20 @@
 package com.example.Fproject.IotService;
-
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+//import com.pi4j.io.gpio.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+//import com.fasterxml.jackson.core.JsonProcessingException;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @Service
 public class IoTConnecterImpl implements IoTConnecter {
-    
+
+
     @Override
     public String powerOn(String url) {
         String requestUrl = url + "/on";
@@ -28,7 +32,7 @@ public class IoTConnecterImpl implements IoTConnecter {
         String requestUrl = url + "/state";
         return sendGetRequest(requestUrl);
     }
-    
+
     private String sendGetRequest(String requestUrl) {
         StringBuilder response = new StringBuilder();
         try {
@@ -39,17 +43,22 @@ public class IoTConnecterImpl implements IoTConnecter {
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                while((line=in.readLine())!=null){
+                    response.append(line);
+                }
                 in.close();
-            } 
+
+            }
             else {
                 response.append("GET request failed with response code: " + responseCode);
             }
-        } 
-        //發生例外狀況時，將錯誤訊息附加在response字串後面返回，存儲從IoT裝置接收到的數據或錯誤訊息。
-        //test6.18
+        }
         catch (IOException e) {
             response.append("Exception occurred while sending GET request: " + e.getMessage());
         }
+
         return response.toString();
     }
 }
+
