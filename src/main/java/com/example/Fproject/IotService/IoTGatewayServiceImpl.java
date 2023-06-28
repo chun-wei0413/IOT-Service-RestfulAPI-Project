@@ -19,7 +19,7 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
     @Override
     public String powerOn(String userId, String deviceId, String password) {
-        databaseService.authorization(userId,password);
+        //databaseService.authorization(userId,password);
         databaseService.authentication(deviceId,password);
         String url = databaseService.getUrl(deviceId);
         return ioTConnecter.powerOn(url);
@@ -27,16 +27,16 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
     @Override
     public String powerOff(String userId, String deviceId, String password) {
-        databaseService.authorization(userId,password);
-        databaseService.authentication(deviceId,password);
+        //databaseService.authorization(userId,password);
+        //databaseService.authentication(deviceId,password);
         String url = databaseService.getUrl(deviceId);
         return ioTConnecter.powerOff(url);
     }
 
     @Override
     public String getState(String userId, String deviceId, String password) {
-        databaseService.authorization(userId,password);
-        databaseService.authentication(deviceId,password);
+        //databaseService.authorization(userId,password);
+        //databaseService.authentication(deviceId,password);
         String url = databaseService.getUrl(deviceId);
         return ioTConnecter.getState(url);
     }
@@ -47,7 +47,7 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
     @Override
     public boolean alterDevice(String userId,String password,String deviceId,String url) {
-        databaseService.authentication(userId,password);
+        //databaseService.authentication(userId,password);
         databaseService.authorization(userId,deviceId);
         return databaseService.alterDevice(userId,deviceId,url);
 
