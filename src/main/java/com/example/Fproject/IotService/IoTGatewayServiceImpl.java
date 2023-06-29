@@ -2,8 +2,12 @@ package com.example.Fproject.IotService;
 
 
 import com.example.Fproject.database.DatabaseService;
+import com.example.Fproject.database.entity.Device;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class IoTGatewayServiceImpl implements IoTGatewayService {
@@ -12,10 +16,6 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     @Autowired
     private IoTConnecter ioTConnecter;
 
-    public IoTGatewayServiceImpl(DatabaseService databaseService, IoTConnecter ioTConnecter) {
-        this.databaseService = databaseService;
-        this.ioTConnecter = ioTConnecter;
-    }
 
     @Override
     public String powerOn(String userId, String deviceId, String password) {
@@ -51,49 +51,84 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
             if(databaseService.authorization(userId,deviceId)){
                 String url = databaseService.getUrl(deviceId);
                 return ioTConnecter.getState(url);
-            }else{
+            }
+            else{
                 return "permission failed";
             }
-
         }
         return "authentication fail";
     }
     @Override
-    public boolean addDevice(String url,String type,String pin,String userId) {
-        return databaseService.addDevice(url, type, pin, userId);
-    }
-
-    @Override
-    public boolean alterDevice(String userId,String password,String deviceId,String url) {
-        if(databaseService.authentication(userId,password)){
-            if(databaseService.authorization(userId,deviceId)){
-                return databaseService.alterDevice(userId,deviceId,url);
-            }else{
-                return false;
-            }
-
+    public String addDevice(String url,String type,String pin,String userId) {
+        if(databaseService.addDevice(url, type, pin, userId)){
+            return "Successful Addition";
         }
-        return false;
+        return "Unsuccessful Addition";
     }
 
     @Override
-    public boolean deleteDevice(String userId,String password,String deviceId) {
+    public String alterDevice(String userId,String password,String deviceId,String url) {
         if(databaseService.authentication(userId,password)){
-            if(databaseService.authorization(userId,deviceId)){
-                return databaseService.deleteDevice(userId,deviceId);
-            }else{
-                return false;
+            if(databaseService.alterDevice(userId,deviceId,url)){
+                return "Successful Modification";
             }
-
+            else{
+                return "Failed Modification";
+            }
         }
-        return false;
+        return "authentication fail";
+    }
+
+    @Override
+    public String deleteDevice(String userId,String password,String deviceId) {
+        if(databaseService.authentication(userId,password)){
+            if(databaseService.deleteDevice(userId,deviceId)){
+                return "Successful Deletion";
+            }
+            else{
+                return "Failed Deletion";
+            }
+        }
+        return "authentication fail";
     }
     @Override
-    public boolean registerUser(String userId,String password){
-        return databaseService.registerUser(userId,password);
+    public String registerUser(String userId,String password){
+        if(databaseService.registerUser(userId,password)){
+            return "Successful Registration";
+        }
+        return "Failed Registration";
     }
     @Override
-    public boolean deleteUser(String userId,String password){
-        return databaseService.deleteUser(userId,password);
+    public String deleteUser(String userId,String password){
+        if(databaseService.authentication(userId,password)){
+            if(databaseService.deleteUser(userId)){
+                return "Successful Deletion";
+            }
+            else{
+                return "Failed Deletion";
+            }
+        }
+        return "authentication fail";
+    }
+    @Override
+    public String addRelationship(String userId, String deviceId, String password){
+        if(databaseService.authentication(userId,password)){
+            if(databaseService.addRelationship(userId,deviceId)){
+                return "Successful Authorization";
+            }
+            else{
+                return "Failed Authorization";
+            }
+        }
+        return "authentication fail";
+    }
+    @Override
+    public List<String> queryDevice(String userId, String password){
+        if(databaseService.authentication(userId,password)){
+            return databaseService.queryDeviceMember(userId);
+        }
+        List<String>message = new ArrayList<>();
+        message.add("failed query");
+        return message;
     }
 }

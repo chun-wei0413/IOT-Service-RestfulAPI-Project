@@ -6,6 +6,7 @@ import com.example.Fproject.database.entity.User;
 import java.util.List;
 
 public interface DeviceService {
-    List<Device.DeviceData> getDeviceMembers(String userId);
-    List<User> getAllDeviceMembers();
+
+    boolean isManager(String userId, String deviceId);
+
 }
