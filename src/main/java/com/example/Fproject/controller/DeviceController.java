@@ -34,10 +34,10 @@ public class DeviceController {
     public String deleteDevice(@Valid @RequestBody DeviceBean.DeleteDeviceBean deleteDeviceBean){
         return apiHandler.deleteDevice(deleteDeviceBean);
     }
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Query", description = "Query which devices the user owns")
     @RequestMapping(value="devices/query", method=RequestMethod.GET)
-    public List<String> queryDevice(@Valid @RequestBody DeviceBean.QueryDeviceBean queryDeviceBean){
+    public List<Device.Data> queryDevice(@Valid @RequestBody DeviceBean.QueryDeviceBean queryDeviceBean){
         return apiHandler.queryDevice(queryDeviceBean);
     }
 

@@ -85,8 +85,17 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public boolean deleteDevice(String userId,String deviceId) {
         Device device=deviceRepository.findById(deviceId).orElse(null);
+
         if(deviceService.isManager(userId, deviceId)) {
-            deviceRepository.delete(device);
+            if (device != null) {
+                // 刪除與該設備相關的多對多關聯
+                for (User user : device.getUser()) {
+                    user.setDevice(null);
+                    userRepository.save(user);
+                }
+                // 刪除該設備
+                deviceRepository.delete(device);
+            }
             return true;
         }
         return false;
@@ -138,12 +147,12 @@ public class DatabaseServiceImpl implements DatabaseService {
             return false;
         }
     }
-    public List<String> queryDeviceMember(String userId){
+    public List<Device.Data> queryDeviceMember(String userId){
         User user=userRepository.findById(userId).orElse(null);
         Set<Device> devices=user.getDevice();
-        List<String> members = new ArrayList<>();
+        List<Device.Data> members = new ArrayList<>();
         for(Device device : devices){
-            members.add(device.getDeviceId()+" "+device.getType());
+            members.add(device.toData());
         }
         return members;
     }

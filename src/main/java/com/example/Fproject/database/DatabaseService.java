@@ -13,7 +13,7 @@ public interface DatabaseService {
     boolean registerUser(String userId,String password);
     boolean deleteUser(String userId);
     boolean addRelationship(String userId, String deviceId);
-    List<String> queryDeviceMember(String userId);
+    List<Device.Data> queryDeviceMember(String userId);
     String getUrl(String deviceId);
 
 }
