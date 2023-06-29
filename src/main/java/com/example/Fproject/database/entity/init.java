@@ -31,11 +31,15 @@ public class init {
             device1.setUrl("http://d65f-122-116-105-235.ngrok-free.app");
             device1.setManager("wqr002");
             device1.setType("light");
-            //Device device2 = new Device();
-            //device2.setDeviceId("002");
+            Device device2 = new Device();
+            device2.setDeviceId("002");
+            device2.setPin("14");
+            device2.setUrl("hihi");
+            device2.setManager("wqr002");
+            device2.setType("fan");
             Set<Device> devices = new HashSet<>();
             devices.add(device1);
-            //devices.add(device2);
+            devices.add(device2);
             user.setDevice(devices);
             userRepository.save(user);
 
