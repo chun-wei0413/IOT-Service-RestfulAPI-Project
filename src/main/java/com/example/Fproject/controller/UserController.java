@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     private APIHandler apiHandler;
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "delete user", description = "Delete the user with authentication, otherwise it will be invalid.")
     @RequestMapping(value="/user/delete", method=RequestMethod.DELETE)
     public String deleteUser(@Valid @RequestBody UserBean.DeleteUserBean deleteUserBean){

@@ -23,7 +23,7 @@ public class DeviceController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "modify device", description = "Modify the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value = "/devices/alter", method = RequestMethod.PUT)
+    @RequestMapping(value = "/devices/alter", method = RequestMethod.PATCH)
     public String alterDevice(@Valid @RequestBody DeviceBean.AlterDeviceBean alterDeviceBean) {
         return apiHandler.alterDevice(alterDeviceBean);
     }

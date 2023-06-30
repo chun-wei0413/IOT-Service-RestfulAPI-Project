@@ -84,18 +84,9 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     public boolean deleteDevice(String userId, String deviceId) {
-        Device device = deviceRepository.findById(deviceId).orElse(null);
 
         if (deviceService.isManager(userId, deviceId)) {
-            if (device != null) {
-                // 刪除與該設備相關的多對多關聯
-                for (User user : device.getUser()) {
-                    user.setDevice(null);
-                    userRepository.save(user);
-                }
-                // 刪除該設備
-                deviceRepository.delete(device);
-            }
+            deviceRepository.deleteById(deviceId);
             return true;
         }
         return false;
@@ -118,16 +109,12 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     public boolean deleteUser(String userId) {
         User user = userRepository.findById(userId).orElse(null);
-        Set<Device> devices = user.getDevice();
         try {
-            for (Device device: devices) {
-                device.setUser(null);
-                deviceRepository.save(device);
-            }
+            user.setDevice(null);
             userRepository.delete(user);
             return true;
         }catch(Exception e){
-            System.out.println("Error" + e.getMessage());
+            System.out.println("Error!!!  " + e.getMessage());
             return false;
         }
     }

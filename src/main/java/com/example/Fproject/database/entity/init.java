@@ -20,11 +20,13 @@ public class init {
     private userRepository userRepository;
     @PostConstruct
     public void init() {
-            User user = new User();
-            user.setUserId("wqr002");
-            user.setPassword("12345");
+            User user1 = new User();
+            user1.setUserId("wqr002");
+            user1.setPassword("12345");
+            User user2 = new User();
+            user2.setUserId("frank");
+            user2.setPassword("666666");
             //userRepository.save(user);
-
             Device device1 = new Device();
             device1.setDeviceId("801");
             device1.setPin("14");
@@ -37,11 +39,15 @@ public class init {
             device2.setUrl("http://d65f-122-116-105-235.ngrok-free.app");
             device2.setManager("wqr002");
             device2.setType("fan");
-            Set<Device> devices = new HashSet<>();
-            devices.add(device1);
-            devices.add(device2);
-            user.setDevice(devices);
-            userRepository.save(user);
+            Set<Device> devices1 = new HashSet<>();
+            Set<Device> devices2 = new HashSet<>();
+            devices1.add(device1);
+            devices1.add(device2);
+            devices2.add(device2);
+            user1.setDevice(devices1);
+            user2.setDevice(devices2);
+            userRepository.save(user1);
+            userRepository.save(user2);
 
 
 

@@ -49,4 +49,5 @@ public class Device {
         @Schema(description = "The type of the device,consists of letters.",example = "user")
         private String type;
     }
+
 }

@@ -32,4 +32,8 @@ public class User {
     )
     private Set<Device> device = new HashSet<Device>();
 
+    public void removeDevice(Device device){
+        this.device.remove(device);
+        device.getUser().remove(this);
+    }
 }
