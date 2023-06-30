@@ -1,5 +1,7 @@
-package com.example.Fproject.database;
+package com.example.Fproject.database.serviceImpl;
 
+import com.example.Fproject.database.DatabaseService;
+import com.example.Fproject.database.DeviceService;
 import com.example.Fproject.database.dao.userRepository;
 import com.example.Fproject.database.dao.deviceRepository;
 import com.example.Fproject.database.entity.User;
@@ -7,8 +9,7 @@ import com.example.Fproject.database.entity.Device;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class DatabaseServiceImpl implements DatabaseService {
@@ -17,25 +18,26 @@ public class DatabaseServiceImpl implements DatabaseService {
     private deviceRepository deviceRepository;
     @Autowired
     private userRepository userRepository;
+    @Autowired
+    private DeviceService deviceService;
 
-
-    public DatabaseServiceImpl(com.example.Fproject.database.dao.deviceRepository deviceRepository, com.example.Fproject.database.dao.userRepository userRepository) {
-        this.deviceRepository = deviceRepository;
-        this.userRepository = userRepository;
-
-    }
 
     @Override
     public boolean authorization(String userId,String deviceId) {
-        //授權
-        return true;
+        User user=userRepository.findById(userId).orElse(null);
+        Set<Device> devices=user.getDevice();
+        for(Device device : devices){
+            if(device.getDeviceId().equals(deviceId)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean authentication(String userId,String password){
-        //驗證
         User user=userRepository.findById(userId).orElse(null);
-        if(user!=null&&Objects.equals(user.getPassword(),password)){
+        if(user!=null&&user.getPassword().equals(password)){
             return true;
         }
         return false;
@@ -43,8 +45,6 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     public boolean addDevice(String url,String type,String pin,String userId) {
-        // TODO Auto-generated method stub
-        //新增裝置
 
         String deviceId=generateRandomId();
 
@@ -54,10 +54,13 @@ public class DatabaseServiceImpl implements DatabaseService {
         device.setType(type);
         device.setPin(pin);
         device.setManager(userId);
-
-
+        User user=userRepository.findById(userId).orElse(null);
+        if(user==null) return false;
+        Set<Device> devices = new HashSet<>();
+        devices.add(device);
+        user.setDevice(devices);
         try{
-            deviceRepository.save(device);
+            userRepository.save(user);
             return true;
 
         }catch(Exception e){
@@ -70,30 +73,23 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     public boolean alterDevice(String userId,String deviceId,String url) {
-        // TODO Auto-generated method stub
-        //改變裝置的url
         Device device=deviceRepository.findById(deviceId).orElse(null);
-        if(device!=null&&Objects.equals(device.getManager(),userId)){
+        if(deviceService.isManager(userId, deviceId)){
             device.setUrl(url);
             deviceRepository.save(device);
             return true;
-        }else{
-            return false;
         }
-
+        return false;
     }
 
     @Override
-    public boolean deleteDevice(String deviceId,String userId) {
-        //刪除裝置
+    public boolean deleteDevice(String userId,String deviceId) {
         Device device=deviceRepository.findById(deviceId).orElse(null);
-        if(device!=null&&Objects.equals(device.getManager(),userId)){
+        if(deviceService.isManager(userId, deviceId)) {
             deviceRepository.delete(device);
             return true;
-        }else{
-            return false;
         }
-
+        return false;
     }
 
     @Override
@@ -110,13 +106,13 @@ public class DatabaseServiceImpl implements DatabaseService {
         }
 
     }
-    public boolean deleteUser(String userId,String password){
+    public boolean deleteUser(String userId){
         User user=userRepository.findById(userId).orElse(null);
-        if(user!=null&&Objects.equals(user.getPassword(),password)){
+        try {
             userRepository.delete(user);
-            return true;
-        }else{
-            return false;
+            return true; // Deletion successful
+        } catch (Exception e) {
+            return false; // Deletion failed
         }
     }
     public String getUrl(String deviceId){
@@ -127,7 +123,30 @@ public class DatabaseServiceImpl implements DatabaseService {
             return null;
         }
     }
+    public boolean addRelationship(String userId,String deviceId){
+        User user=userRepository.findById(userId).orElse(null);
+        Device device=deviceRepository.findById(deviceId).orElse(null);
+        Set<Device> devices = new HashSet<>();
+        devices.add(device);
+        user.setDevice(devices);
+        try{
+            userRepository.save(user);
+            return true;
 
+        }catch(Exception e){
+            System.out.println("Error"+e.getMessage());
+            return false;
+        }
+    }
+    public List<String> queryDeviceMember(String userId){
+        User user=userRepository.findById(userId).orElse(null);
+        Set<Device> devices=user.getDevice();
+        List<String> members = new ArrayList<>();
+        for(Device device : devices){
+            members.add(device.getDeviceId()+" "+device.getType());
+        }
+        return members;
+    }
     private String generateRandomId(){
         Random random=new Random();
         int id;
@@ -144,6 +163,4 @@ public class DatabaseServiceImpl implements DatabaseService {
         return idString;
 
     }
-
-
 }
