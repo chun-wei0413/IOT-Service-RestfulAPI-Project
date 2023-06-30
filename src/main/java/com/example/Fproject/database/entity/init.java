@@ -34,7 +34,7 @@ public class init {
             Device device2 = new Device();
             device2.setDeviceId("002");
             device2.setPin("14");
-            device2.setUrl("hihi");
+            device2.setUrl("http://d65f-122-116-105-235.ngrok-free.app");
             device2.setManager("wqr002");
             device2.setType("fan");
             Set<Device> devices = new HashSet<>();

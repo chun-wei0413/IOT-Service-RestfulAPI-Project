@@ -31,4 +31,5 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "deviceId")}
     )
     private Set<Device> device = new HashSet<Device>();
+
 }

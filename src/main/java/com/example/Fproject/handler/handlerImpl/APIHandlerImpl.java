@@ -69,7 +69,7 @@ public class APIHandlerImpl implements APIHandler {
         if(deleteDeviceBean.getDeviceId()==null) throw new RequestNotFoundException("deviceId");
         return ioTGatewayService.deleteDevice(deleteDeviceBean.getUserId(),deleteDeviceBean.getPassword(),deleteDeviceBean.getDeviceId());
     }
-    public List<String> queryDevice(DeviceBean.QueryDeviceBean queryDeviceBean){
+    public List<Device.Data> queryDevice(DeviceBean.QueryDeviceBean queryDeviceBean){
         if(queryDeviceBean.getUserId()==null) throw new RequestNotFoundException("userId");
         if(queryDeviceBean.getPassword()==null) throw new RequestNotFoundException("password");
         return ioTGatewayService.queryDevice(queryDeviceBean.getUserId(),queryDeviceBean.getPassword());
