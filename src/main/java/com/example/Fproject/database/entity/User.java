@@ -30,10 +30,6 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "userId")},
             inverseJoinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "deviceId")}
     )
-    private Set<Device> device = new HashSet<Device>();
+    private Set<Device> device = new HashSet<>();
 
-    public void removeDevice(Device device){
-        this.device.remove(device);
-        device.getUser().remove(this);
-    }
 }

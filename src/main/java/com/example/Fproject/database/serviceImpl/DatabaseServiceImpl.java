@@ -45,18 +45,15 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     public boolean addDevice(String url, String type, String pin, String userId) {
-
         String deviceId = generateRandomId();
-
+        User user = userRepository.findById(userId).orElse(null);
+        Set<Device> devices = user.getDevice();
         Device device = new Device();
         device.setDeviceId(deviceId);
         device.setUrl(url);
         device.setType(type);
         device.setPin(pin);
         device.setManager(userId);
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) return false;
-        Set<Device> devices = new HashSet<>();
         devices.add(device);
         user.setDevice(devices);
         try {
@@ -74,8 +71,10 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public boolean alterDevice(String userId, String deviceId, String url) {
         Device device = deviceRepository.findById(deviceId).orElse(null);
+        Set<User> user = device.getUser();
         if (deviceService.isManager(userId, deviceId)) {
             device.setUrl(url);
+            device.setUser(user);
             deviceRepository.save(device);
             return true;
         }
@@ -84,9 +83,10 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     public boolean deleteDevice(String userId, String deviceId) {
-
+        Device device = deviceRepository.findById(deviceId).orElse(null);
         if (deviceService.isManager(userId, deviceId)) {
-            deviceRepository.deleteById(deviceId);
+            device.setUser(null);
+            deviceRepository.delete(device);
             return true;
         }
         return false;
@@ -130,7 +130,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     public boolean addRelationship(String userId,String deviceId){
         User user=userRepository.findById(userId).orElse(null);
         Device device=deviceRepository.findById(deviceId).orElse(null);
-        Set<Device> devices = new HashSet<>();
+        Set<Device> devices = user.getDevice();
         devices.add(device);
         user.setDevice(devices);
         try{

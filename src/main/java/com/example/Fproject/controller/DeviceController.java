@@ -21,14 +21,14 @@ public class DeviceController {
     @Autowired
     private APIHandler apiHandler;
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "modify device", description = "Modify the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/alter", method = RequestMethod.PATCH)
     public String alterDevice(@Valid @RequestBody DeviceBean.AlterDeviceBean alterDeviceBean) {
         return apiHandler.alterDevice(alterDeviceBean);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "delete device", description = "Delete the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value="/devices/delete", method=RequestMethod.DELETE)
     public String deleteDevice(@Valid @RequestBody DeviceBean.DeleteDeviceBean deleteDeviceBean){

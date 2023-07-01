@@ -26,30 +26,29 @@ public class init {
             User user2 = new User();
             user2.setUserId("frank");
             user2.setPassword("666666");
-            //userRepository.save(user);
+
             Device device1 = new Device();
             device1.setDeviceId("801");
             device1.setPin("14");
             device1.setUrl("http://d65f-122-116-105-235.ngrok-free.app");
             device1.setManager("wqr002");
             device1.setType("light");
+
             Device device2 = new Device();
             device2.setDeviceId("002");
             device2.setPin("14");
             device2.setUrl("http://d65f-122-116-105-235.ngrok-free.app");
-            device2.setManager("wqr002");
+            device2.setManager("frank");
             device2.setType("fan");
-            Set<Device> devices1 = new HashSet<>();
-            Set<Device> devices2 = new HashSet<>();
-            devices1.add(device1);
-            devices1.add(device2);
-            devices2.add(device2);
-            user1.setDevice(devices1);
-            user2.setDevice(devices2);
+
+            Set<Device> deviceswqr = user1.getDevice();
+            Set<Device> devicesfrank = user2.getDevice();
+            deviceswqr.add(device1);
+            user1.setDevice(deviceswqr);
             userRepository.save(user1);
+            devicesfrank.add(device2);
+            user2.setDevice(devicesfrank);
             userRepository.save(user2);
-
-
 
     }
 }

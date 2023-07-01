@@ -33,8 +33,12 @@ public class Device {
     @Column
     private String manager;
 
-    @ManyToMany(mappedBy = "device")
-    private Set<User> user = new HashSet<User>();
+    @ManyToMany(targetEntity = User.class)
+    @JoinTable(name = "User_Device",
+            joinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "deviceId")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "userId")}
+    )
+    private Set<User> user = new HashSet<>();
 
     public Data toData(){
         return new Data(getDeviceId(),getType());
