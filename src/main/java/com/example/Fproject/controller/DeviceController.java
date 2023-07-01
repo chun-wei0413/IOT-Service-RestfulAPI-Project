@@ -23,7 +23,7 @@ public class DeviceController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "modify device", description = "Modify the device with authentication, otherwise it will be invalid.")
-    @RequestMapping(value = "/devices/alter", method = RequestMethod.PUT)
+    @RequestMapping(value = "/devices/alter", method = RequestMethod.PATCH)
     public String alterDevice(@Valid @RequestBody DeviceBean.AlterDeviceBean alterDeviceBean) {
         return apiHandler.alterDevice(alterDeviceBean);
     }
@@ -34,10 +34,10 @@ public class DeviceController {
     public String deleteDevice(@Valid @RequestBody DeviceBean.DeleteDeviceBean deleteDeviceBean){
         return apiHandler.deleteDevice(deleteDeviceBean);
     }
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Query", description = "Query which devices the user owns")
     @RequestMapping(value="devices/query", method=RequestMethod.GET)
-    public List<String> queryDevice(@Valid @RequestBody DeviceBean.QueryDeviceBean queryDeviceBean){
+    public List<Device.Data> queryDevice(@Valid @RequestBody DeviceBean.QueryDeviceBean queryDeviceBean){
         return apiHandler.queryDevice(queryDeviceBean);
     }
 

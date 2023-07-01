@@ -15,7 +15,7 @@ public interface APIHandler {
     String registerUser(UserBean.RegisterUserBean registerUserBean);
     String alterDevice(DeviceBean.AlterDeviceBean alterDeviceBean);
     String deleteDevice(DeviceBean.DeleteDeviceBean deleteDeviceBean);
-    List<String> queryDevice(DeviceBean.QueryDeviceBean queryDeviceBean);
+    List<Device.Data> queryDevice(DeviceBean.QueryDeviceBean queryDeviceBean);
     String addDevice(DeviceBean.AddDeviceBean addDeviceBean);
 
 }

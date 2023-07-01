@@ -123,12 +123,7 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
         return "authentication fail";
     }
     @Override
-    public List<String> queryDevice(String userId, String password){
-        if(databaseService.authentication(userId,password)){
+    public List<Device.Data> queryDevice(String userId, String password){
             return databaseService.queryDeviceMember(userId);
-        }
-        List<String>message = new ArrayList<>();
-        message.add("failed query");
-        return message;
     }
 }

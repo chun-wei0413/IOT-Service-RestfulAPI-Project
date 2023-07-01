@@ -35,4 +35,19 @@ public class Device {
 
     @ManyToMany(mappedBy = "device")
     private Set<User> user = new HashSet<User>();
+
+    public Data toData(){
+        return new Data(getDeviceId(),getType());
+    }
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Data{
+        @Schema(description = "The id of the device, composed of three numbers.", example = "001")
+        private String deviceId;
+        @Schema(description = "The type of the device,consists of letters.",example = "user")
+        private String type;
+    }
+
 }
