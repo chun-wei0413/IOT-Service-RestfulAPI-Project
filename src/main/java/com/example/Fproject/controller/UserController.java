@@ -6,6 +6,7 @@ import com.example.Fproject.handler.APIHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ public class UserController {
     @Autowired
     private APIHandler apiHandler;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "delete user", description = "Delete the user with authentication, otherwise it will be invalid.")
     @RequestMapping(value="/user/delete", method=RequestMethod.DELETE)

@@ -4,11 +4,12 @@ import com.example.Fproject.apibody.IotBean;
 import com.example.Fproject.IotService.IoTGatewayService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
+import com.example.Fproject.rabbitmq.RabbitmqConfig;
 import com.example.Fproject.handler.APIHandler;
 
 @Tag(name="IOT control Services API")
@@ -18,7 +19,10 @@ public class IotController {
     private IoTGatewayService ioTGatewayService;
     @Autowired
     private APIHandler apiHandler;
-
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private RabbitmqConfig rabbitmqConfig;
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "turn on the light", description = "Turn on the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/on", method = RequestMethod.GET)
@@ -37,7 +41,9 @@ public class IotController {
     @Operation(summary = "Check the status of the light", description = "Check the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/state", method = RequestMethod.GET)
     public String getState(@Valid @RequestBody IotBean.GetStateBean getStateBean) {
-        return apiHandler.getState(getStateBean);
+        String state = apiHandler.getState(getStateBean);
+        rabbitTemplate.convertAndSend(rabbitmqConfig.IOTSTATE_EXCHANGE,"",state);
+        return state;
     }
 
 }

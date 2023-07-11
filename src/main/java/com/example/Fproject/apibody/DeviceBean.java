@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
-public class DeviceBean {
+import java.io.Serializable;
+
+public class DeviceBean implements Serializable {
     @Getter
     @Setter
     public static class AddDeviceBean{
@@ -60,5 +62,11 @@ public class DeviceBean {
         @Schema(description = "Password consisting of six characters", example = "ssssss")
         @NotEmpty
         private String password;
+        public String toString() {
+            return "User{" +
+                    "name='" + userId + '\'' +
+                    ", password='" + password +
+                    "'}";
+        }
     }
 }
