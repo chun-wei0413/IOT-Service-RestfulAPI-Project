@@ -16,7 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "[user]")
 public class User {
-    @Schema(description = "The id of the user, composed of letters and numbers.", example = "fanjiang")
+    @Schema(description = "The id of the user, composed of letters and numbers.", example = "frank")
     //@schema屬性描述
     @Id
     //@id:primary key
@@ -25,11 +25,8 @@ public class User {
     @Column
     private String password;
 
-    @ManyToMany(targetEntity = Device.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "User_Device",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "userId")},
-            inverseJoinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "deviceId")}
-    )
-    private Set<Device> device = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserDevice> userDevices = new HashSet<>();
+
 
 }
