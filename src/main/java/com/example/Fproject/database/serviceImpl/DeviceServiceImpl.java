@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class DeviceServiceImpl implements DeviceService  {
@@ -22,12 +23,12 @@ public class DeviceServiceImpl implements DeviceService  {
     @Override
     public boolean isManager(String userId,String deviceId){
         Device device = deviceRepository.findById(deviceId).orElse(null);
-        Manager manager = managerRepository.findById(userId).orElse(null);
-
-        if(manager!=null&&device.getManager().equals(userId)){
-            return true;
-        }else{
-            return false;
+        Set<Manager> managers=device.getManager();
+        for(Manager manager:managers){
+            if(manager.getManagerId().equals(userId)){
+                return true;
+            }
         }
+        return false;
     }
 }

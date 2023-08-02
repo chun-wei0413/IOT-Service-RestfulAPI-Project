@@ -1,7 +1,7 @@
 package com.example.Fproject.database.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
+import com.example.Fproject.database.entity.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,11 +26,15 @@ public class Device {
     @Column
     private String pin;
 
+    @ManyToMany(targetEntity = User.class)
+    @JoinTable(name = "user_device",
+            joinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "deviceId")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "userId")}
+    )
+    private Set<User> user = new HashSet<>();
 
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
-    private Set<UserDevice> userDevices = new HashSet<>();
-
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Manager.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "device_id", referencedColumnName = "deviceId")
     private Set<Manager> manager = new HashSet<>();
 
     public Data toData(){
