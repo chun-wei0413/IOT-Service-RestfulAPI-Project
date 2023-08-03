@@ -8,7 +8,7 @@ public interface IoTGatewayService {
 	String powerOn(String userId,String deviceId,String password);
 	String powerOff(String userId,String deviceId,String password);
 	String getState(String userId,String deviceId,String password);
-	String addDevice(String url,String type,String pin,String userId);
+	String addDevice(String type,String pin,String userId);
 	String alterDevice(String userId,String password,String deviceId,String url);
 	String deleteDevice(String userId,String password,String deviceId);
 	String registerUser(String userId,String password);

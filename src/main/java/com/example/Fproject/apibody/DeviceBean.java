@@ -11,9 +11,6 @@ public class DeviceBean implements Serializable {
     @Getter
     @Setter
     public static class AddDeviceBean{
-        @Schema(description = "The url of Iot device", example = "https://34b2-2402-7500-586-e710-25f3-3d9-cc89-63f0.ngrok-free.app/")
-        @NotEmpty
-        private String url;
         @Schema(description = "The type of Iot device", example = "fan")
         @NotEmpty
         private String type;
@@ -36,9 +33,9 @@ public class DeviceBean implements Serializable {
         @Schema(description = "Password consisting of six characters", example = "ssssss")
         @NotEmpty
         private String password;
-        @Schema(description = "The url of Iot device", example = "https://34b2-2402-7500-586-e710-25f3-3d9-cc89-63f0.ngrok-free.app/")
+        @Schema(description = "The pin of Iot device", example = "14")
         @NotEmpty
-        private String url;
+        private String pin;
     }
     @Getter
     @Setter

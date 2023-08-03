@@ -44,7 +44,12 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public boolean addDevice(String url, String type, String pin, String userId) {
+    public boolean addDevice(String type, String pin, String userId) {
+        String mid = generateRandomId();
+        Manager manager = new Manager();
+        manager.setManagerId(mid); //Random Id
+        manager.setManager(userId);
+
         String deviceId = generateRandomId();
         User user = userRepository.findById(userId).orElse(null);
         Set<Device> devices = user.getDevice();
@@ -52,15 +57,11 @@ public class DatabaseServiceImpl implements DatabaseService {
         device.setDeviceId(deviceId);
         device.setType(type);
         device.setPin(pin);
+        device.getManager().add(manager);
+
         devices.add(device);
         user.setDevice(devices);
 
-        Set<Manager> managers = device.getManager();
-        Manager manager = new Manager();
-        manager.setManagerId(userId);
-        manager.setDevice(device);
-        managers.add(manager);
-        device.setManager(managers);//device 儲存 manager
         try {
             userRepository.save(user);
             deviceRepository.save(device);
@@ -75,11 +76,14 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public boolean alterDevice(String userId, String deviceId, String url) {
+    public boolean alterDevice(String userId, String deviceId, String pin) {
         Device device = deviceRepository.findById(deviceId).orElse(null);
-        Set<User> user = device.getUser();
+        Set<Manager> managers = device.getManager();
+        Set<User> users = device.getUser();
         if (deviceService.isManager(userId, deviceId)) {
-            device.setUser(user);
+            device.setPin(pin);
+            device.setManager(managers);
+            device.setUser(users);
             deviceRepository.save(device);
             return true;
         }
@@ -90,7 +94,8 @@ public class DatabaseServiceImpl implements DatabaseService {
     public boolean deleteDevice(String userId, String deviceId) {
         Device device = deviceRepository.findById(deviceId).orElse(null);
         if (deviceService.isManager(userId, deviceId)) {
-            device.setUser(null);
+            device.setUser(null);  //把device所存的User Set刪光
+            device.setManager(null);  //把device所存的Manager Set刪光
             deviceRepository.delete(device);
             return true;
         }
@@ -123,7 +128,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             return false;
         }
     }
-
+    /*<-------------------------------------dont move--------------------------------->*/
     public String getUrl(String deviceId){
         Device device=deviceRepository.findById(deviceId).orElse(null);
         if(device!=null){
@@ -132,6 +137,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             return null;
         }
     }
+    /*<-------------------------------------dont move--------------------------------->*/
     public boolean addRelationship(String userId,String deviceId){
         User user=userRepository.findById(userId).orElse(null);
         Device device=deviceRepository.findById(deviceId).orElse(null);

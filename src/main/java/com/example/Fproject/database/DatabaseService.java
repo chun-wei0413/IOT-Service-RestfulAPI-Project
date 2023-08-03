@@ -7,8 +7,8 @@ import java.util.List;
 public interface DatabaseService {
     boolean authorization(String userId,String deviceId);
     boolean authentication(String userId,String password);
-    boolean addDevice(String url,String type,String pin,String userId);
-    boolean alterDevice(String userId,String deviceId,String url);
+    boolean addDevice(String type,String pin,String userId);
+    boolean alterDevice(String userId,String deviceId,String pin);
     boolean deleteDevice(String userId,String deviceId);
     boolean registerUser(String userId,String password);
     boolean deleteUser(String userId);

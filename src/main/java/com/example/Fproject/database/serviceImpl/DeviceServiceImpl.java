@@ -25,7 +25,7 @@ public class DeviceServiceImpl implements DeviceService  {
         Device device = deviceRepository.findById(deviceId).orElse(null);
         Set<Manager> managers=device.getManager();
         for(Manager manager:managers){
-            if(manager.getManagerId().equals(userId)){
+            if(manager.getManager().equals(userId)){
                 return true;
             }
         }

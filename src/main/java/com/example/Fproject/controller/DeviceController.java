@@ -28,7 +28,7 @@ public class DeviceController {
 
     @Autowired
     private RabbitmqConfig rabbitmqConfig;
-    @Operation(summary = "modify device", description = "Modify the device with authentication, otherwise it will be invalid.")
+    @Operation(summary = "modify device", description = "Change the GPIO pin of the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/alter", method = RequestMethod.PATCH)
     public String alterDevice(@Valid @RequestBody DeviceBean.AlterDeviceBean alterDeviceBean) {
         return apiHandler.alterDevice(alterDeviceBean);

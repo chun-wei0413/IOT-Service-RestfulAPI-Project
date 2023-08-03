@@ -16,14 +16,19 @@ import java.util.Set;
 @Entity
 @Table(name = "[manager]")
 public class Manager {
-    @Schema(description = "The id of the manager, composed of letters and numbers.", example = "frank")
+    @Schema(description = "The id of the manager, composed of several numbers.", example = "000003")
     //@schema屬性描述
     @Id
     //@id:primary key
     private String managerId;
+
+    @Schema(description = "The id of the manager, composed of letters and numbers.",example = "frank")
+    @Column
+    private String manager;
 
     @ManyToOne(targetEntity = Device.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "device_id", referencedColumnName = "deviceId")
     private Device device;
 
 }
+

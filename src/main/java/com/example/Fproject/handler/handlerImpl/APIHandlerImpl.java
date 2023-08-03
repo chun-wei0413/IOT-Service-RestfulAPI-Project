@@ -60,8 +60,8 @@ public class APIHandlerImpl implements APIHandler {
         if(alterDeviceBean.getUserId()==null) throw new RequestNotFoundException("userId");
         if(alterDeviceBean.getPassword()==null) throw new RequestNotFoundException("password");
         if(alterDeviceBean.getDeviceId()==null) throw new RequestNotFoundException("deviceId");
-        if(alterDeviceBean.getUrl()==null) throw new RequestNotFoundException("url");
-        return ioTGatewayService.alterDevice(alterDeviceBean.getUserId(),alterDeviceBean.getPassword(),alterDeviceBean.getDeviceId(),alterDeviceBean.getUrl());
+        if(alterDeviceBean.getPin()==null) throw new RequestNotFoundException("url");
+        return ioTGatewayService.alterDevice(alterDeviceBean.getUserId(),alterDeviceBean.getPassword(),alterDeviceBean.getDeviceId(),alterDeviceBean.getPin());
     }
     public String deleteDevice(DeviceBean.DeleteDeviceBean deleteDeviceBean){
         if(deleteDeviceBean.getUserId()==null) throw new RequestNotFoundException("userId");
@@ -75,10 +75,9 @@ public class APIHandlerImpl implements APIHandler {
         return ioTGatewayService.queryDevice(queryDeviceBean.getUserId(),queryDeviceBean.getPassword());
     }
     public String addDevice(DeviceBean.AddDeviceBean addDeviceBean){
-        if(addDeviceBean.getUrl()==null) throw new RequestNotFoundException("url");
         if(addDeviceBean.getType()==null) throw new RequestNotFoundException("Type");
         if(addDeviceBean.getPin()==null) throw new RequestNotFoundException("Pin");
         if(addDeviceBean.getManager()==null) throw new RequestNotFoundException("Manager");
-        return ioTGatewayService.addDevice(addDeviceBean.getUrl(),addDeviceBean.getType(),addDeviceBean.getPin(),addDeviceBean.getManager());
+        return ioTGatewayService.addDevice(addDeviceBean.getType(),addDeviceBean.getPin(),addDeviceBean.getManager());
     }
 }
