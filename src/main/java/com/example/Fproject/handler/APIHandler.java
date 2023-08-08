@@ -1,7 +1,5 @@
 package com.example.Fproject.handler;
-import com.example.Fproject.apibody.IotBean;
-import com.example.Fproject.apibody.UserBean;
-import com.example.Fproject.apibody.DeviceBean;
+import com.example.Fproject.apibody.*;
 import com.example.Fproject.database.entity.*;
 
 import java.util.List;
@@ -18,4 +16,8 @@ public interface APIHandler {
     List<Device.Data> queryDevice(DeviceBean.QueryDeviceBean queryDeviceBean);
     String addDevice(DeviceBean.AddDeviceBean addDeviceBean);
 
+    String addManager(ManagerBean.AddManagerBean addManagerBean);
+    String deleteManager(ManagerBean.DeleteManagerBean deleteManagerBean);
+
+    List<Manager.member> listManager(ManagerBean.ManagerListBean managerListBean);
 }

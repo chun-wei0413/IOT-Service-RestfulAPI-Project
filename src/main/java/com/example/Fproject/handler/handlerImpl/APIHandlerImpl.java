@@ -1,7 +1,5 @@
 package com.example.Fproject.handler.handlerImpl;
-import com.example.Fproject.apibody.IotBean;
-import com.example.Fproject.apibody.UserBean;
-import com.example.Fproject.apibody.DeviceBean;
+import com.example.Fproject.apibody.*;
 import com.example.Fproject.IotService.IoTGatewayService;
 import com.example.Fproject.database.DatabaseService;
 import com.example.Fproject.controller.exception.RequestNotFoundException;
@@ -79,5 +77,24 @@ public class APIHandlerImpl implements APIHandler {
         if(addDeviceBean.getPin()==null) throw new RequestNotFoundException("Pin");
         if(addDeviceBean.getManager()==null) throw new RequestNotFoundException("Manager");
         return ioTGatewayService.addDevice(addDeviceBean.getType(),addDeviceBean.getPin(),addDeviceBean.getManager());
+    }
+
+    public String addManager(ManagerBean.AddManagerBean addManagerBean){
+        if(addManagerBean.getUserId()==null) throw new RequestNotFoundException("userId");
+        if(addManagerBean.getDeviceId()==null) throw new RequestNotFoundException("deviceId");
+        if(addManagerBean.getPassword()==null) throw new RequestNotFoundException("password");
+        return ioTGatewayService.addManager(addManagerBean.getUserId(), addManagerBean.getDeviceId(),addManagerBean.getPassword());
+    }
+    public String deleteManager(ManagerBean.DeleteManagerBean deleteManagerBean){
+        if(deleteManagerBean.getUserId()==null) throw new RequestNotFoundException("userId");
+        if(deleteManagerBean.getDeviceId()==null) throw new RequestNotFoundException("deviceId");
+        if(deleteManagerBean.getPassword()==null) throw new RequestNotFoundException("password");
+        return ioTGatewayService.deleteManager(deleteManagerBean.getUserId(), deleteManagerBean.getDeviceId(),deleteManagerBean.getPassword());
+    }
+    public List<Manager.member> listManager(ManagerBean.ManagerListBean managerListBean){
+        if(managerListBean.getUserId()==null) throw new RequestNotFoundException("userId");
+        if(managerListBean.getDeviceId()==null) throw new RequestNotFoundException("deviceId");
+        if(managerListBean.getPassword()==null) throw new RequestNotFoundException("password");
+        return ioTGatewayService.listManager(managerListBean.getUserId(), managerListBean.getDeviceId(),managerListBean.getPassword());
     }
 }

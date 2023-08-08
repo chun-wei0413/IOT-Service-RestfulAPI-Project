@@ -30,5 +30,16 @@ public class Manager {
     @JoinColumn(name = "device_id", referencedColumnName = "deviceId")
     private Device device;
 
+    public Manager.member toMember(){
+        return new Manager.member(getManager());
+    }
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class member{
+        @Schema(description = "The id of the manager, composed of letters and numbers.",example = "frank")
+        private String manager;
+    }
 }
 
