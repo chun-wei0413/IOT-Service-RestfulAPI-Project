@@ -25,7 +25,6 @@ public class DeviceController {
     private APIHandler apiHandler;
     @Autowired
     private RabbitTemplate rabbitTemplate;
-
     @Autowired
     private RabbitmqConfig rabbitmqConfig;
     @Operation(summary = "modify device", description = "Change the GPIO pin of the device with authentication, otherwise it will be invalid.")

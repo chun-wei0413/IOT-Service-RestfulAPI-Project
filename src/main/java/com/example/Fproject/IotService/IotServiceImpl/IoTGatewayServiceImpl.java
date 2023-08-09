@@ -5,6 +5,7 @@ import com.example.Fproject.IotService.IoTConnecter;
 import com.example.Fproject.IotService.IoTGatewayService;
 import com.example.Fproject.database.DatabaseService;
 import com.example.Fproject.database.entity.Device;
+import com.example.Fproject.database.entity.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -125,7 +126,36 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
         return "authentication fail";
     }
     @Override
-    public List<Device.Data> queryDevice(String userId, String password){
+    public List<Device.Data> queryDevice(String userId,String deviceId){
             return databaseService.queryDeviceMember(userId);
+    }
+
+    @Override
+    public String addManager(String userId, String deviceId,String password){
+        if(databaseService.authentication(userId,password)){
+            if(databaseService.addManager(userId,deviceId)){
+                return "Successful Addition";
+            }
+            else{
+                return "Failed Addition";
+            }
+        }
+        return "authentication fail";
+    }
+    @Override
+    public String deleteManager(String userId, String deviceId,String password){
+        if(databaseService.authentication(userId,password)){
+            if(databaseService.deleteManager(userId,deviceId)){
+                return "Successful Deletion";
+            }
+            else{
+                return "Failed Deletion";
+            }
+        }
+        return "authentication fail";
+    }
+    @Override
+    public List<Manager.member> listManager(String userId, String deviceId,String password){
+        return databaseService.listManager(deviceId);
     }
 }

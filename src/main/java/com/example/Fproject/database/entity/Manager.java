@@ -30,8 +30,8 @@ public class Manager {
     @JoinColumn(name = "device_id", referencedColumnName = "deviceId")
     private Device device;
 
-    public Manager.member toMember(){
-        return new Manager.member(getManager());
+    public member toMember(){
+        return new member(getManager());
     }
     @Getter
     @Setter

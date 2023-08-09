@@ -116,7 +116,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         }
 
     }
-
+    @Override
     public boolean deleteUser(String userId) {
         User user = userRepository.findById(userId).orElse(null);
         try {
@@ -138,6 +138,8 @@ public class DatabaseServiceImpl implements DatabaseService {
         }
     }
     /*<-------------------------------------dont move--------------------------------->*/
+
+    @Override
     public boolean addRelationship(String userId,String deviceId){
         User user=userRepository.findById(userId).orElse(null);
         Device device=deviceRepository.findById(deviceId).orElse(null);
@@ -153,6 +155,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             return false;
         }
     }
+    @Override
     public List<Device.Data> queryDeviceMember(String userId){
         User user=userRepository.findById(userId).orElse(null);
         Set<Device> devices=user.getDevice();
@@ -162,6 +165,59 @@ public class DatabaseServiceImpl implements DatabaseService {
         }
         return members;
     }
+
+    @Override
+    public boolean addManager(String userId, String deviceId){
+        Manager manager = new Manager();
+        manager.setManagerId(generateRandomId());
+        manager.setManager(userId);
+
+        Device device = deviceRepository.findById(deviceId).orElse(null);
+        Set<Manager> managers = device.getManager();
+
+        managers.add(manager);
+
+        device.setManager(managers);
+
+        try{
+            deviceRepository.save(device);
+            return true;
+        }catch(Exception e){
+            System.out.println("Error"+e.getMessage());
+            return false;
+        }
+    }
+    @Override
+    public boolean deleteManager(String userId, String deviceId){
+        Device device = deviceRepository.findById(deviceId).orElse(null);
+        Set<Manager> managers = device.getManager();
+        String temp=null;
+        for(Manager managerset:managers){
+            if(managerset.getManager().equals(userId)){
+                temp = managerset.getManagerId();
+                break;
+            }
+        }
+        try {
+            managerRepository.deleteById(temp);
+            return true;
+        }catch(Exception e){
+            System.out.println("Error!!!  " + e.getMessage());
+            return false;
+        }
+    }
+    @Override
+    public List<Manager.member> listManager(String deviceId){
+        Device device = deviceRepository.findById(deviceId).orElse(null);
+        Set<Manager> managers = device.getManager();
+
+        List<Manager.member> managerList = new ArrayList<>();
+        for(Manager managerset : managers){
+            managerList.add(managerset.toMember());
+        }
+        return managerList;
+    }
+
     private String generateRandomId(){
         Random random=new Random();
         int id;
