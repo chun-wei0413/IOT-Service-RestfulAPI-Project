@@ -2,7 +2,7 @@ package com.example.Fproject.controller;
 
 import com.example.Fproject.IotService.IoTGatewayService;
 import com.example.Fproject.apibody.UserBean;
-import com.example.Fproject.handler.APIHandler;
+import com.example.Fproject.handler.UserHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private IoTGatewayService ioTGatewayService;
     @Autowired
-    private APIHandler apiHandler;
+    private UserHandler userHandler;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -26,21 +26,20 @@ public class UserController {
     @Operation(summary = "delete user", description = "Delete the user with authentication, otherwise it will be invalid.")
     @RequestMapping(value="/user/delete", method=RequestMethod.DELETE)
     public String deleteUser(@Valid @RequestBody UserBean.DeleteUserBean deleteUserBean){
-        return apiHandler.deleteUser(deleteUserBean);
+        return userHandler.deleteUser(deleteUserBean);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Authorization", description = "Authorized users can control specific devices")
     @RequestMapping(value="/user/author", method=RequestMethod.POST)
     public String authorUser(@Valid @RequestBody UserBean.AuthorUserBean authorUserBean){
-        return apiHandler.authorUser(authorUserBean);
+        return userHandler.authorUser(authorUserBean);
     }
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "add new user", description = "Add a user with authentication")
     @RequestMapping(value="/user/register", method=RequestMethod.POST)
     public String registerUser(@Valid @RequestBody UserBean.RegisterUserBean registerUserBean){
-        return apiHandler.registerUser(registerUserBean);
+        return userHandler.registerUser(registerUserBean);
     }
-
 
 }

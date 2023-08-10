@@ -93,9 +93,14 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public boolean deleteDevice(String userId, String deviceId) {
         Device device = deviceRepository.findById(deviceId).orElse(null);
-        if (deviceService.isManager(userId, deviceId)) {
-            device.setUser(null);  //把device所存的User Set刪光
-            device.setManager(null);  //把device所存的Manager Set刪光
+        if (device != null && deviceService.isManager(userId, deviceId)) {
+            /*刪除所有user對於device的關聯*/
+            device.setUser(null);
+            /*刪除所有manager對於device的關聯*/
+            for(Manager managers : device.getManager()){
+                managers.setDevice(null);
+            }
+            /*斷開所有關連並刪除*/
             deviceRepository.delete(device);
             return true;
         }
@@ -119,7 +124,14 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public boolean deleteUser(String userId) {
         User user = userRepository.findById(userId).orElse(null);
+        List<Manager> managers = managerRepository.findAll();
         try {
+            /*因為user刪掉，所以manager裡有此user的欄位都拔掉*/
+            for(Manager managerList : managers){
+                if(managerList.getManager().equals(userId)){
+                    managerList.setManager(null);
+                }
+            }
             user.setDevice(null);
             userRepository.delete(user);
             return true;
@@ -161,7 +173,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         Set<Device> devices=user.getDevice();
         List<Device.Data> members = new ArrayList<>();
         for(Device device : devices){
-            members.add(device.toData());
+                members.add(device.toData());
         }
         return members;
     }
@@ -192,14 +204,15 @@ public class DatabaseServiceImpl implements DatabaseService {
         Device device = deviceRepository.findById(deviceId).orElse(null);
         Set<Manager> managers = device.getManager();
         String temp=null;
-        for(Manager managerset:managers){
-            if(managerset.getManager().equals(userId)){
-                temp = managerset.getManagerId();
-                break;
-            }
-        }
         try {
-            managerRepository.deleteById(temp);
+            for(Manager managerset:managers){
+                if(managerset.getManager().equals(userId)){
+                    temp = managerset.getManagerId();
+                    /*斷開關連*/
+                    managerset.setDevice(null);
+                    break;
+                }
+            }
             return true;
         }catch(Exception e){
             System.out.println("Error!!!  " + e.getMessage());
@@ -213,7 +226,10 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         List<Manager.member> managerList = new ArrayList<>();
         for(Manager managerset : managers){
-            managerList.add(managerset.toMember());
+            /*不要把manager為null的關係也挖出來*/
+            if(managerset.getManager()!=null) {
+                managerList.add(managerset.toMember());
+            }
         }
         return managerList;
     }
