@@ -26,12 +26,12 @@ public class init {
         user2.setPassword("666666");
 
         Device device1 = new Device();
-        device1.setDeviceId("801");
+        device1.setDeviceId("000001");
         device1.setPin("14");
         device1.setType("light");
 
         Device device2 = new Device();
-        device2.setDeviceId("002");
+        device2.setDeviceId("000002");
         device2.setPin("14");
         device2.setType("fan");
 
@@ -82,7 +82,7 @@ public class init {
         String idString;
 
         do{
-            id=random.nextInt(1000);
+            id=random.nextInt(1000000);
             //return 0-999的整數作為id
             idString=String.valueOf(id);
             duplicate=deviceRepository.existsById(idString);//判斷id是否重複

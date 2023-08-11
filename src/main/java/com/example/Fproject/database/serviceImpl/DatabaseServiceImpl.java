@@ -45,12 +45,12 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     public boolean addDevice(String type, String pin, String userId) {
-        String mid = generateRandomId();
+        String mid = generateRandomId(2);
         Manager manager = new Manager();
         manager.setManagerId(mid); //Random Id
         manager.setManager(userId);
 
-        String deviceId = generateRandomId();
+        String deviceId = generateRandomId(1);
         User user = userRepository.findById(userId).orElse(null);
         Set<Device> devices = user.getDevice();
         Device device = new Device();
@@ -181,7 +181,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public boolean addManager(String userId, String deviceId){
         Manager manager = new Manager();
-        manager.setManagerId(generateRandomId());
+        manager.setManagerId(generateRandomId(2));
         manager.setManager(userId);
 
         Device device = deviceRepository.findById(deviceId).orElse(null);
@@ -234,19 +234,29 @@ public class DatabaseServiceImpl implements DatabaseService {
         return managerList;
     }
 
-    private String generateRandomId(){
+    private String generateRandomId(int type){
         Random random=new Random();
         int id;
-        boolean duplicate;
+        boolean dFlag=false;
+        boolean mFlag=false;
         String idString;
-
-        do{
-            id=random.nextInt(1000);
-            //return 0-999的整數作為id
-            idString=String.valueOf(id);
-            duplicate=deviceRepository.existsById(idString);//判斷id是否重複
-        }while(duplicate);
-
+        //if type=1 產生deviceId else 產生managerId
+        if(type==1) {
+            do {
+                id = random.nextInt(1000000);
+                //return 0-999的整數作為id
+                idString = String.valueOf(id);
+                dFlag = deviceRepository.existsById(idString);//判斷deviceId是否重複
+            } while (dFlag);
+        }
+        else{
+            do {
+                id = random.nextInt(1000000);
+                //return 0-999的整數作為id
+                idString = String.valueOf(id);
+                mFlag = managerRepository.existsById(idString);//判斷managerId是否重複
+            } while (mFlag);
+        }
         return idString;
 
     }
