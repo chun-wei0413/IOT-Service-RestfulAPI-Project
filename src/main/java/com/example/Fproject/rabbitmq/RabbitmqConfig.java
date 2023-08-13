@@ -43,11 +43,12 @@ public class RabbitmqConfig {
     @Bean
     public FanoutExchange managerListExchange(){return new FanoutExchange(MANAGERLIST_EXCHANGE);}
     @Bean
-    public Binding DeviceListBinding(){
-        return BindingBuilder.bind(deviceListQueue()).to(deviceListExchange());
+    public Binding DeviceListBinding(){return BindingBuilder.bind(deviceListQueue()).to(deviceListExchange());
     }
     @Bean
     public Binding IoTStateBinding(){
         return BindingBuilder.bind(iotStateQueue()).to(iotStateExchange());
     }
+    @Bean
+    public Binding ManagerListBinding(){return BindingBuilder.bind(managerListQueue()).to(managerListExchange());}
 }
