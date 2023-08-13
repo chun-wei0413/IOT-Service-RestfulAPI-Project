@@ -16,6 +16,8 @@ public class RabbitmqConfig {
     public static final String DEVICELIST_QUEUE = "deviceList-queue";
     public static final String IOTSTATE_EXCHANGE = "iotState-exchange";
     public static final String IOTSTATE_QUEUE = "iotState-queue";
+    public static final String MANAGERLIST_EXCHANGE = "managerList-exchange";
+    public static final String MANAGERLIST_QUEUE = "managerList-queue";
     @Bean
     public MessageConverter jsonMessageConverter(ObjectMapper objectMapper) {
         return new Jackson2JsonMessageConverter(objectMapper);
@@ -36,6 +38,10 @@ public class RabbitmqConfig {
     public FanoutExchange iotStateExchange(){
         return new FanoutExchange(IOTSTATE_EXCHANGE);
     }
+    @Bean
+    public Queue managerListQueue() { return new Queue(MANAGERLIST_QUEUE);}
+    @Bean
+    public FanoutExchange managerListExchange(){return new FanoutExchange(MANAGERLIST_EXCHANGE);}
     @Bean
     public Binding DeviceListBinding(){
         return BindingBuilder.bind(deviceListQueue()).to(deviceListExchange());

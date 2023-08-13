@@ -42,7 +42,7 @@ public class DeviceController {
     @RequestMapping(value="devices/query", method=RequestMethod.GET)
     public List<Device.Data> queryDevice(@Valid @RequestBody DeviceBean.QueryDeviceBean queryDeviceBean){
         List<Device.Data> data = deviceHandler.queryDevice(queryDeviceBean);
-        //rabbitTemplate.convertAndSend(rabbitmqConfig.DEVICELIST_EXCHANGE,"",data);
+        rabbitTemplate.convertAndSend(rabbitmqConfig.DEVICELIST_EXCHANGE,"",data);
         return data;
     }
 

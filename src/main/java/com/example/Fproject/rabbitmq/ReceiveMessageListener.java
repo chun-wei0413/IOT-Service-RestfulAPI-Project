@@ -23,4 +23,9 @@ public class ReceiveMessageListener {
     public void receive2(String message){
         System.out.println("Consume message: "+message);
     }
+
+    @RabbitListener(queues = {"managerList-queue"})
+    public void receive3(List message) {
+        System.out.println("Consume message: "+message);
+    }
 }

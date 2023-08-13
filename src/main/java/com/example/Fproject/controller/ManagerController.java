@@ -45,6 +45,8 @@ public class ManagerController {
             description = "After verifying that the user possesses administrative privileges for the specific device, request the list of administrators for that particular device from the system.")
     @RequestMapping(value = "/manager/list", method = RequestMethod.GET)
     public List<Manager.member> listManager(@Valid @RequestBody ManagerBean.ManagerListBean managerListBean) {
-        return managerHandler.listManager(managerListBean);
+        List<Manager.member> data = managerHandler.listManager(managerListBean);
+        rabbitTemplate.convertAndSend(rabbitmqConfig.MANAGERLIST_EXCHANGE,"",data);
+        return data;
     }
 }
