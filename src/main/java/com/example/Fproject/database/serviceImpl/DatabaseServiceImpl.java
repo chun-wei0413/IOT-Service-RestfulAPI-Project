@@ -203,13 +203,13 @@ public class DatabaseServiceImpl implements DatabaseService {
     public boolean deleteManager(String userId, String deviceId){
         Device device = deviceRepository.findById(deviceId).orElse(null);
         Set<Manager> managers = device.getManager();
-        String temp=null;
         try {
             for(Manager managerset:managers){
                 if(managerset.getManager().equals(userId)){
-                    temp = managerset.getManagerId();
                     /*斷開關連*/
                     managerset.setDevice(null);
+                    managerset.setManager(null);
+                    managerRepository.delete(managerset);
                     break;
                 }
             }
