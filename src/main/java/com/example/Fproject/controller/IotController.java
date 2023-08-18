@@ -5,6 +5,7 @@ import com.example.Fproject.IotService.IoTGatewayService;
 import com.example.Fproject.handler.IoTHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,23 +27,22 @@ public class IotController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "turn on the light", description = "Turn on the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/on", method = RequestMethod.GET)
-    public String turnOn(@Valid @RequestBody IotBean.PowerOnBean powerOnBean) {
+    public String turnOn(@Valid @RequestBody IotBean.PowerOnBean powerOnBean) throws MqttException {
         return ioTHandler.powerOn(powerOnBean);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "turn off the light", description = "Turn off the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/off", method = RequestMethod.GET)
-    public String turnOff(@Valid @RequestBody IotBean.PowerOffBean powerOffBean) {
+    public String turnOff(@Valid @RequestBody IotBean.PowerOffBean powerOffBean) throws MqttException {
         return ioTHandler.powerOff(powerOffBean);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Check the status of the light", description = "Check the device with authentication, otherwise it will be invalid.")
     @RequestMapping(value = "/devices/state", method = RequestMethod.GET)
-    public String getState(@Valid @RequestBody IotBean.GetStateBean getStateBean) {
+    public String getState(@Valid @RequestBody IotBean.GetStateBean getStateBean) throws MqttException, InterruptedException {
         String state = ioTHandler.getState(getStateBean);
-        rabbitTemplate.convertAndSend(rabbitmqConfig.IOTSTATE_EXCHANGE,"",state);
         return state;
     }
 

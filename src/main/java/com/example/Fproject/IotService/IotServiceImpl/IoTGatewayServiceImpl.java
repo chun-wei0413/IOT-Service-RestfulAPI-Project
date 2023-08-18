@@ -6,6 +6,7 @@ import com.example.Fproject.IotService.IoTGatewayService;
 import com.example.Fproject.database.DatabaseService;
 import com.example.Fproject.database.entity.Device;
 import com.example.Fproject.database.entity.Manager;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,10 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
 
 
     @Override
-    public String powerOn(String userId, String deviceId, String password) {
+    public String powerOn(String userId, String deviceId, String password) throws MqttException {
         if(databaseService.authentication(userId,password)){
             if(databaseService.authorization(userId,deviceId)){
-                String url = databaseService.getUrl(deviceId);
-                return ioTConnecter.powerOn(url);
+                return ioTConnecter.powerOn(deviceId);
             }else{
                 return "permission failed";
             }
@@ -35,11 +35,10 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     }
 
     @Override
-    public String powerOff(String userId, String deviceId, String password) {
+    public String powerOff(String userId, String deviceId, String password) throws MqttException {
         if(databaseService.authentication(userId,password)){
             if(databaseService.authorization(userId,deviceId)){
-                String url = databaseService.getUrl(deviceId);
-                return ioTConnecter.powerOff(url);
+                return ioTConnecter.powerOff(deviceId);
             }else{
                 return "permission failed";
             }
@@ -49,11 +48,10 @@ public class IoTGatewayServiceImpl implements IoTGatewayService {
     }
 
     @Override
-    public String getState(String userId, String deviceId, String password) {
+    public String getState(String userId, String deviceId, String password) throws MqttException, InterruptedException {
         if(databaseService.authentication(userId,password)){
             if(databaseService.authorization(userId,deviceId)){
-                String url = databaseService.getUrl(deviceId);
-                return ioTConnecter.getState(url);
+                return ioTConnecter.getState(deviceId);
             }
             else{
                 return "permission failed";

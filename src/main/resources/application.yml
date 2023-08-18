@@ -17,7 +17,11 @@ spring:
       port: 5672
       username: guest
       password: guest
-
+  mqtt:
+      ip: 140.136.151.74
+      port: 1883
+      automaticReconnect: true
+      clientId:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
 

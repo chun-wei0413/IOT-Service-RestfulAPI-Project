@@ -73,6 +73,17 @@
 			<artifactId>spring-boot-starter-amqp</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		<!--mqtt-->
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-mqtt</artifactId>
+			<version>5.3.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.paho</groupId>
+			<artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+			<version>1.2.5</version> <!-- 請使用你需要的版本 -->
+		</dependency>
 		<!-- Spring jdbc -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
