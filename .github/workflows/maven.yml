@@ -1,0 +1,48 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build
+      run: mvn -B -f iot-service-restfulapi-project/pom.xml clean install
+
+    - name: Test
+      run: mvn -B -f iot-service-restfulapi-project/pom.xml test
+      
+    - name: Debug
+      run: |
+        pwd
+        ls -la
+        ls -la iot-service-restfulapi-project
+        ls -la iot-service-restfulapi-project/target
+      
+    - name: Build and push Docker image
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      shell: bash
+      run: |
+        docker build -t iot-service-restfulapi-project:latest .
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        docker tag iot-service-restfulapi-project russellli/iot-service-restfulapi-project
+        docker push russellli/iot-service-restfulapi-project:latest
+        
+        
+        
