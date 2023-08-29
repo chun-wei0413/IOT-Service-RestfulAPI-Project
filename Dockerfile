@@ -1,6 +1,6 @@
 FROM openjdk:17
 
 WORKDIR /
-COPY ./target/IoT-microservice.jar /
+COPY iot-service-restfulapi-project/target/IoT-microservice.jar /
 
 CMD ["java","-jar","IoT-microservice.jar"]
