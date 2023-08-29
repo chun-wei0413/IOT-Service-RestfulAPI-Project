@@ -23,7 +23,8 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<!-- swagger -->
-		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+		<!--only for pipeline test>
+		<!- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
