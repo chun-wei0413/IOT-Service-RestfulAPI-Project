@@ -4,4 +4,5 @@ public interface IoTConnecter {
 	String powerOn(String url);
 	String powerOff(String url);
 	String getState(String url);
+	//0302
 }
